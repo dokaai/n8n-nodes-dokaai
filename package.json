@@ -1,0 +1,43 @@
+{
+  "name": "n8n-nodes-dokaai",
+  "version": "0.1.0",
+  "description": "n8n community node for Dokaai.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "author": "DokaAI",
+  "homepage": "https://dokaai.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dokaai/n8n-nodes-dokaai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dokaai/n8n-nodes-dokaai/issues"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "n8n",
+    "dokaai"
+  ],
+  "scripts": {
+    "build": "node scripts/clean-dist.js && tsc -p tsconfig.json && mkdir -p dist/api dist/nodes/Dokaai && cp api/index.json dist/api/index.json && cp nodes/Dokaai/dokaai.svg dist/nodes/Dokaai/dokaai.icon.svg",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "files": [
+    "dist",
+    "api",
+    "nodes/**/*.svg"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/DokaaiApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Dokaai/Dokaai.node.js"
+    ]
+  },
+  "devDependencies": {
+    "n8n-workflow": "^1.82.0",
+    "typescript": "^5.9.3"
+  }
+}
