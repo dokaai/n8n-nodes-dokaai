@@ -544,6 +544,30 @@ test('Dokaai node generates expected fields from OpenAPI params and request bodi
 	}
 });
 
+test('Dokaai generated enum dropdown fields are clearable', () => {
+	const node = new Dokaai();
+
+	for (const fixture of operationFixtures) {
+		const fields = node.description.properties.filter((property) =>
+			property.displayOptions?.show?.operation?.includes(fixture.operationId),
+		);
+
+		for (const field of fields.filter((property) => property.type === 'options' && Array.isArray(property.options))) {
+			assert.deepEqual(
+				field.options[0],
+				{ name: 'None', value: '' },
+				`${fixture.operationId}.${field.name} should include a clear selection option`,
+			);
+		}
+	}
+
+	const listPoolCustomerSearchField = node.description.properties.find((property) =>
+		property.name === 'searchField' &&
+		property.displayOptions?.show?.operation?.includes('getPoolCustomers'),
+	);
+	assert.deepEqual(listPoolCustomerSearchField?.options?.[0], { name: 'None', value: '' });
+});
+
 test('Dokaai request builder matches OpenAPI method, URL, auth, query, and body shape', () => {
 	for (const fixture of operationFixtures) {
 		const definition = findOperationById(dokaaiOpenApiDocument, fixture.operationId);

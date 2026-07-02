@@ -54,17 +54,37 @@ test('normalizeSchema merges allOf required fields and properties', () => {
 	assert.deepEqual(Object.keys(normalized.properties), ['fieldName', 'fieldType']);
 });
 
-test('buildNodeProperty converts enums to n8n options', () => {
+test('buildNodeProperty converts optional enums to clearable n8n options', () => {
 	const property = buildNodeProperty('fieldType', {
 		type: 'string',
 		enum: ['text', 'number'],
 	});
 
 	assert.equal(property.type, 'options');
-	assert.equal(property.default, 'text');
+	assert.equal(property.default, '');
 	assert.deepEqual(property.options, [
+		{ name: 'None', value: '' },
 		{ name: 'Text', value: 'text' },
 		{ name: 'Number', value: 'number' },
+	]);
+});
+
+test('buildNodeProperty keeps required enums clearable', () => {
+	const property = buildNodeProperty(
+		'mode',
+		{
+			type: 'string',
+			enum: ['email', 'sms'],
+		},
+		{ required: true },
+	);
+
+	assert.equal(property.type, 'options');
+	assert.equal(property.default, '');
+	assert.deepEqual(property.options, [
+		{ name: 'None', value: '' },
+		{ name: 'Email', value: 'email' },
+		{ name: 'Sms', value: 'sms' },
 	]);
 });
 

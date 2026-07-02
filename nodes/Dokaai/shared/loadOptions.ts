@@ -113,10 +113,12 @@ const loadOperationOptions = async (
 		);
 		const options = mapIdNameOptions(readDataArray(response));
 
-		return options.length > 0 ? [clearSelectionOption, ...options] : errorOption('No options found');
+		return options.length > 0
+			? [clearSelectionOption, ...options]
+			: [clearSelectionOption, ...errorOption('No options found')];
 	} catch (error) {
 		const message = error instanceof Error ? error.message : 'Unable to load options';
-		return errorOption(`Error: ${message}`);
+		return [clearSelectionOption, ...errorOption(`Error: ${message}`)];
 	}
 };
 

@@ -65,6 +65,11 @@ const toOptions = (values: unknown[] | undefined): INodeProperties['options'] =>
 		?.filter((value): value is string | number => typeof value === 'string' || typeof value === 'number')
 		.map((value) => ({ name: humanize(String(value)), value })) ?? [];
 
+const clearSelectionOption: INodePropertyOptions = {
+	name: 'None',
+	value: '',
+};
+
 const mapType = (schema: JsonSchema): INodeProperties['type'] => {
 	const type = readSchemaType(schema);
 	const itemSchema = normalizeSchema(schema.items);
@@ -203,8 +208,9 @@ export const buildNodeProperty = (
 	};
 
 	if (type === 'options') {
-		property.options = toOptions(normalized.enum);
-		property.default = (property.options as INodePropertyOptions[] | undefined)?.[0]?.value ?? '';
+		const enumOptions = toOptions(normalized.enum) as INodePropertyOptions[];
+		property.options = [clearSelectionOption, ...enumOptions];
+		property.default = '';
 	}
 
 	if (type === 'multiOptions') {
