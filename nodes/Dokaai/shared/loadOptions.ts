@@ -7,10 +7,14 @@ import type {
 	ResourceMapperFields,
 } from 'n8n-workflow';
 
+import {
+	customerAttributeMapperConfig,
+	type DynamicLoaderConfig,
+	type DynamicLoaderMethod,
+	dynamicLoaderConfigs,
+} from '../loaders/config';
 import { buildRequestOptions, findOperationById } from '../openapi/runtime';
 import { dokaaiOpenApiDocument } from './document';
-
-const DOKAAI_SERVICE_ID = 'f72c921b-0ad0-4387-8ac8-9ff8467d77cc';
 
 const clearSelectionOption: INodePropertyOptions = {
 	name: 'None',
@@ -47,7 +51,7 @@ const errorOption = (message: string): INodePropertyOptions[] => [
 		name: message,
 		value: `__error__${message}`,
 	},
-	];
+];
 
 const mapCustomerAttributeFieldType = (fieldType: unknown): FieldType => {
 	if (fieldType === 'number') {
@@ -116,30 +120,58 @@ const loadOperationOptions = async (
 	}
 };
 
-async function loadCustomerAttributeFields(this: ILoadOptionsFunctions): Promise<ResourceMapperFields> {
-	const projectId = this.getCurrentNodeParameter('projectId') as string | undefined;
-	const customerPoolId = this.getCurrentNodeParameter('customerPoolId') as string | undefined;
+const valuesFromLoaderConfig = (
+	context: ILoadOptionsFunctions,
+	config: DynamicLoaderConfig,
+): Record<string, unknown> | undefined => {
+	const values: Record<string, unknown> = {
+		...(config.staticValues ?? {}),
+	};
 
-	if (!projectId || !customerPoolId) {
+	for (const parameterName of config.dependsOn ?? []) {
+		const value = context.getCurrentNodeParameter(parameterName) as string | undefined;
+
+		if (!value) {
+			return undefined;
+		}
+
+		values[parameterName] = value;
+	}
+
+	return values;
+};
+
+const loadConfiguredOptions = async (
+	context: ILoadOptionsFunctions,
+	method: DynamicLoaderMethod,
+): Promise<INodePropertyOptions[]> => {
+	const config = dynamicLoaderConfigs[method];
+	const values = valuesFromLoaderConfig(context, config);
+
+	if (values === undefined) {
+		return [clearSelectionOption, ...errorOption(config.missingSelectionMessage ?? 'Select required fields first')];
+	}
+
+	return loadOperationOptions(context, config.operationId, values);
+};
+
+async function loadCustomerAttributeFields(this: ILoadOptionsFunctions): Promise<ResourceMapperFields> {
+	const values = valuesFromLoaderConfig(this, customerAttributeMapperConfig);
+
+	if (values === undefined) {
 		return {
 			fields: [],
-			emptyFieldsNotice: 'Select a project and customer pool first.',
+			emptyFieldsNotice: customerAttributeMapperConfig.missingSelectionMessage,
 		};
 	}
 
 	const credentials = await this.getCredentials('dokaaiApi');
-	const definition = findOperationById(dokaaiOpenApiDocument, 'getPoolCustomerAttribute');
+	const definition = findOperationById(dokaaiOpenApiDocument, customerAttributeMapperConfig.operationId);
 	const response = await this.helpers.httpRequest(
 		buildRequestOptions(
 			dokaaiOpenApiDocument,
 			definition,
-			{
-				projectId,
-				customerPoolId,
-				attributeTypes: 'custom',
-				page: '1',
-				size: '100',
-			},
+			values,
 			credentials,
 		),
 	);
@@ -155,49 +187,19 @@ async function loadCustomerAttributeFields(this: ILoadOptionsFunctions): Promise
 
 export const dokaaiLoadOptions = {
 	async getProjects(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-		return loadOperationOptions(this, 'getAllProjectsWithService', {
-			serviceId: DOKAAI_SERVICE_ID,
-			page: '1',
-			size: '100',
-		});
+		return loadConfiguredOptions(this, 'getProjects');
 	},
 
 	async getCustomerPools(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-		const projectId = this.getCurrentNodeParameter('projectId') as string | undefined;
-
-		if (!projectId) {
-			return [clearSelectionOption, ...errorOption('Select a project first')];
-		}
-
-		return loadOperationOptions(this, 'getAllCustomerPoolInProject', { projectId });
+		return loadConfiguredOptions(this, 'getCustomerPools');
 	},
 
 	async getTargetAudienceLists(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-		const projectId = this.getCurrentNodeParameter('projectId') as string | undefined;
-
-		if (!projectId) {
-			return [clearSelectionOption, ...errorOption('Select a project first')];
-		}
-
-		return loadOperationOptions(this, 'getTargetAudienceLists', {
-			projectId,
-			page: '1',
-			size: '100',
-		});
+		return loadConfiguredOptions(this, 'getTargetAudienceLists');
 	},
 
 	async getNotificationHandlers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
-		const projectId = this.getCurrentNodeParameter('projectId') as string | undefined;
-
-		if (!projectId) {
-			return [clearSelectionOption, ...errorOption('Select a project first')];
-		}
-
-		return loadOperationOptions(this, 'getAllNotificationHandlersInProject', {
-			projectId,
-			page: '1',
-			size: '100',
-		});
+		return loadConfiguredOptions(this, 'getNotificationHandlers');
 	},
 };
 

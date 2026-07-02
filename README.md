@@ -13,6 +13,8 @@ have hand-written request modules.
 npm install
 npm run typecheck
 npm run build
+npm run validate:openapi-config
+npm test
 ```
 
 ## Development Commands
@@ -20,12 +22,27 @@ npm run build
 ```bash
 npm run typecheck
 npm run build
+npm test
 ```
 
 `npm run typecheck` validates the TypeScript source.
 
 `npm run build` removes stale `dist`, compiles TypeScript, copies
 `api/index.json`, and copies the node icon into `dist`.
+
+`npm run generate:tests` rewrites generated operation tests from
+`nodes/Dokaai/operations.ts` and `api/index.json`.
+
+`npm run validate:openapi-config` verifies selected operation IDs and dynamic
+loader operation IDs against `api/index.json`.
+
+`npm test` is the single full test command. It runs `generate:tests`,
+`validate:openapi-config`, `tsc --noEmit`, then runs Node's built-in test runner
+against the TypeScript source for unit tests and generated integration tests.
+
+`npm run test:unit` is available when you only want the focused unit tests for
+schema mapping, operation policy, request value conversion, and request
+construction.
 
 n8n loads the compiled files from `dist`, not the TypeScript files directly.
 After changing source files, run `npm run build` and restart n8n.
@@ -51,7 +68,8 @@ Then restart the n8n container and search for `Dokaai` in the node picker.
 `nodes/Dokaai/Dokaai.node.ts` registers one n8n node. The node loads:
 
 - credentials from `credentials/DokaaiApi.credentials.ts`
-- resources, operations, and fields from `nodes/Dokaai/OperationDescription.ts`
+- selected operations from `nodes/Dokaai/operations.ts`
+- resources, operation selectors, and generated fields from `nodes/Dokaai/OperationDescription.ts`
 - dynamic dropdowns and resource mappers from `nodes/Dokaai/shared/loadOptions.ts`
 - request execution from `nodes/Dokaai/GenericFunctions.ts`
 
@@ -101,6 +119,7 @@ Dynamic fields are n8n UX adapters on top of the OpenAPI contract:
 - Customer pool custom attributes load from `getPoolCustomerAttribute` for `addCustomersToPool` and `updateCustomerInPool`.
 
 Dynamic dropdowns include a `None` option so users can clear stale selections.
+Dropdown loader metadata lives in `nodes/Dokaai/loaders/config.ts`.
 
 Customer custom attributes use their plain backend `fieldName`, for example
 `is_vip`. They are submitted as plain request body fields because the selected
@@ -109,12 +128,18 @@ customer operations do not define a `customAttribute` wrapper in OpenAPI.
 ## Adding An Operation
 
 1. Add or update the endpoint in `api/index.json`.
-2. Add the OpenAPI `operationId` to the correct resource in `nodes/Dokaai/OperationDescription.ts`.
+2. Add the OpenAPI `operationId` to the correct resource in `nodes/Dokaai/operations.ts`.
 3. Run:
 
 ```bash
 npm run typecheck
 npm run build
+```
+
+Run the generated test suite:
+
+```bash
+npm test
 ```
 
 4. Restart n8n so it reloads the compiled `dist` files.

@@ -1,7 +1,9 @@
 import type { INodeProperties } from 'n8n-workflow';
 
+import { dynamicParameterLoaders } from './loaders/config';
 import { findOperationById, humanize } from './openapi/runtime';
 import { buildNodeProperty, buildPropertiesFromObjectSchema } from './openapi/schema';
+import { operationsByResource, type DokaaiResource } from './operations';
 import { dokaaiOpenApiDocument } from './shared/document';
 import { sortPriorityFieldsFirst } from './shared/fields';
 import {
@@ -10,36 +12,6 @@ import {
 	operationBodySchema,
 	supportsCustomerAttributeFields,
 } from './shared/operationPolicy';
-
-type DokaaiResource = 'customer' | 'customAttribute' | 'targetAudienceList' | 'notificationHandler';
-
-const operationsByResource: Record<DokaaiResource, readonly string[]> = {
-	customer: [
-		'addCustomersToPool',
-		'updateCustomerInPool',
-		'removeCustomerFromPool',
-		'getPoolCustomers',
-		'getPoolCustomerById',
-	],
-	customAttribute: ['addCustomerCustomAttribute'],
-	targetAudienceList: [
-		'associateCustomerToTargetAudienceList',
-		'deleteCustomerFromTargetAudienceList',
-	],
-	notificationHandler: [
-		'triggerNotificationHandler',
-		'getNotificationHandler',
-		'getAllNotificationHandlersInProject'
-	],
-};
-
-const dynamicLoadersByParameter: Record<string, { method: string; dependsOn?: string[] }> = {
-	projectId: { method: 'getProjects' },
-	customerPoolId: { method: 'getCustomerPools', dependsOn: ['projectId'] },
-	targetAudienceListId: { method: 'getTargetAudienceLists', dependsOn: ['projectId'] },
-	filterOutTALId: { method: 'getTargetAudienceLists', dependsOn: ['projectId'] },
-	notificationHandlerId: { method: 'getNotificationHandlers', dependsOn: ['projectId'] },
-};
 
 const operationDisplayOptions = (resource: DokaaiResource, operationId: string): INodeProperties['displayOptions'] => ({
 	show: {
@@ -82,8 +54,8 @@ const buildOperationFields = (resource: DokaaiResource): INodeProperties[] =>
 					description: parameter.description,
 					required: parameter.required,
 					displayOptions,
-					loadOptionsMethod: dynamicLoadersByParameter[parameter.name]?.method,
-					loadOptionsDependsOn: dynamicLoadersByParameter[parameter.name]?.dependsOn,
+					loadOptionsMethod: dynamicParameterLoaders[parameter.name]?.method,
+					loadOptionsDependsOn: dynamicParameterLoaders[parameter.name]?.dependsOn,
 				}),
 			),
 		);

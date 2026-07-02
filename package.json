@@ -20,6 +20,11 @@
   ],
   "scripts": {
     "build": "node scripts/clean-dist.js && tsc -p tsconfig.json && mkdir -p dist/api dist/nodes/Dokaai && cp api/index.json dist/api/index.json && cp nodes/Dokaai/dokaai.svg dist/nodes/Dokaai/dokaai.icon.svg",
+    "generate:tests": "node scripts/generate-openapi-tests.js",
+    "validate:openapi-config": "node scripts/validate-openapi-config.js",
+    "test": "npm run test:all",
+    "test:all": "npm run generate:tests && npm run validate:openapi-config && npm run typecheck && node --require ./test/register-typescript.cjs --test test/unit/*.test.js test/integration/*.test.js",
+    "test:unit": "npm run typecheck && node --require ./test/register-typescript.cjs --test test/unit/*.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "files": [

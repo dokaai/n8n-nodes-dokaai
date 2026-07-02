@@ -15,6 +15,8 @@ Run before opening or updating a PR:
 ```bash
 npm run typecheck
 npm run build
+npm run validate:openapi-config
+npm test
 ```
 
 ## Naming Conventions
@@ -25,14 +27,16 @@ npm run build
 - Dynamic loaders should be named after the field or resource they load.
 - Shared OpenAPI behavior belongs under `nodes/Dokaai/openapi/`.
 - Integration policy belongs under `nodes/Dokaai/shared/operationPolicy.ts`.
+- Dynamic loader metadata belongs under `nodes/Dokaai/loaders/config.ts`.
 
 ## Adding An Operation
 
 1. Add or update the endpoint in `api/index.json`.
-2. Add the `operationId` to the correct resource in `nodes/Dokaai/OperationDescription.ts`.
-3. Run `npm run typecheck`.
-4. Run `npm run build`.
-5. Restart n8n and verify the operation in the node UI.
+2. Add the `operationId` to the correct resource in `nodes/Dokaai/operations.ts`.
+3. Run `npm run generate:tests`.
+4. Run `npm test`.
+5. Add or update unit tests when the generic OpenAPI inference behavior changes.
+6. Restart n8n and verify the operation in the node UI.
 
 Do not add hand-written request modules for normal REST endpoints. The OpenAPI
 adapter should generate method, URL, input fields, query params, body shape,
@@ -41,6 +45,7 @@ auth headers, and response handling.
 ## Adding Dynamic Behavior
 
 - Prefer a reusable loader under `nodes/Dokaai/shared/loadOptions.ts`.
+- Put loader operation IDs, dependencies, and static query values in `nodes/Dokaai/loaders/config.ts`.
 - Reuse an OpenAPI `operationId` for the loader when possible.
 - Keep dynamic field values aligned with backend IDs.
 - Keep dynamic labels aligned with backend display names.
@@ -83,6 +88,7 @@ Before publishing:
 ```bash
 npm run typecheck
 npm run build
+npm test
 npm pack
 ```
 

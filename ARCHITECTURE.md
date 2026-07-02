@@ -25,9 +25,15 @@ credentials/
 nodes/Dokaai/Dokaai.node.ts
 nodes/Dokaai/GenericFunctions.ts
 nodes/Dokaai/OperationDescription.ts
+nodes/Dokaai/operations.ts
+nodes/Dokaai/loaders/
 nodes/Dokaai/openapi/
 nodes/Dokaai/shared/
 scripts/clean-dist.js
+scripts/generate-openapi-tests.js
+test/register-typescript.cjs
+test/unit/
+test/integration/openapi-generated.test.js
 ```
 
 Compiled files are emitted to `dist/`. n8n loads the compiled files referenced
@@ -54,8 +60,14 @@ Dokaai.node.ts
 `nodes/Dokaai/Dokaai.node.ts` is the thin n8n node shell. It wires
 description, credentials, load methods, and execution.
 
-`nodes/Dokaai/OperationDescription.ts` owns n8n resources, operation selectors,
-field generation, and operation grouping.
+`nodes/Dokaai/operations.ts` owns the selected OpenAPI operation IDs grouped by
+n8n resource. This is the n8n operation source of truth.
+
+`nodes/Dokaai/OperationDescription.ts` owns n8n resource labels, operation
+selectors, and field generation from the selected operation IDs.
+
+`nodes/Dokaai/loaders/config.ts` owns dynamic dropdown and resource mapper
+metadata, including loader operation IDs, dependencies, and static query values.
 
 `nodes/Dokaai/GenericFunctions.ts` owns execution orchestration and API error
 normalization.
@@ -74,7 +86,7 @@ the generator.
 `nodes/Dokaai/shared/fields.ts` owns common field-ordering helpers.
 
 `nodes/Dokaai/shared/loadOptions.ts` owns dynamic dropdown loaders and the
-customer attribute resource mapper.
+customer attribute resource mapper runtime behavior.
 
 `nodes/Dokaai/shared/operationPolicy.ts` owns operation-level policy that is not
 safe to infer directly from raw JSON Schema, such as backend-owned field
@@ -119,6 +131,9 @@ Dynamic dropdowns are explicit UX adapters:
 - `filterOutTALId` -> `getTargetAudienceLists`
 - `notificationHandlerId` -> `getAllNotificationHandlersInProject`
 
+The mapping from field names to loader methods, and from loader methods to
+OpenAPI operation IDs, lives in `nodes/Dokaai/loaders/config.ts`.
+
 Customer custom attributes are implemented with n8n's `resourceMapper`:
 
 - applies to `addCustomersToPool`
@@ -153,13 +168,39 @@ The build copies:
 
 ## Testing Strategy
 
-This repo currently has typecheck and build verification. Future tests should
-cover generated behavior without external API calls:
+Tests verify generated behavior without external API calls.
+
+`scripts/validate-openapi-config.js` verifies:
+
+- selected operation IDs exist in `api/index.json`
+- selected operation IDs are not duplicated
+- dynamic loader methods are declared
+- dynamic loader operation IDs exist in `api/index.json`
+- required loader path/query params are supplied by dependencies or static values
+
+Unit tests under `test/unit/` cover focused reusable behavior:
+
+- JSON Schema normalization and n8n field mapping
+- body-root and backend-owned field policy
+- dynamic loader configuration
+- n8n parameter to API value conversion
+- URL, auth header, query, and request option construction
+
+`scripts/generate-openapi-tests.js` derives test fixtures from:
+
+- `api/index.json`
+- `nodes/Dokaai/operations.ts`
+
+The generated integration test covers:
 
 - operation grouping by resource
 - field generation from OpenAPI schemas
 - request method, URL encoding, headers, query, and body shape
-- dynamic dropdown request shape and option mapping
-- customer attribute resource mapper output
+- customer attribute resource mapper wiring
 - array and fixed collection body conversion
-- error message normalization
+
+Run:
+
+```bash
+npm test
+```
