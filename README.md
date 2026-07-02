@@ -69,7 +69,8 @@ Then restart the n8n container and search for `Dokaai` in the node picker.
 
 - credentials from `credentials/DokaaiApi.credentials.ts`
 - selected operations from `nodes/Dokaai/operations.ts`
-- resources, operation selectors, and generated fields from `nodes/Dokaai/OperationDescription.ts`
+- resources, operation selectors, generated fields, and resource mappers from `nodes/Dokaai/descriptions/`
+- composed node descriptions from `nodes/Dokaai/OperationDescription.ts`
 - dynamic dropdowns and resource mappers from `nodes/Dokaai/shared/loadOptions.ts`
 - request execution from `nodes/Dokaai/GenericFunctions.ts`
 

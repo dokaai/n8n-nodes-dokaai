@@ -25,6 +25,7 @@ npm test
 - n8n resource values use lower camelCase, for example `targetAudienceList`.
 - Local module and folder names use clear concern-based names.
 - Dynamic loaders should be named after the field or resource they load.
+- n8n description builders belong under `nodes/Dokaai/descriptions/`.
 - Shared OpenAPI behavior belongs under `nodes/Dokaai/openapi/`.
 - Integration policy belongs under `nodes/Dokaai/shared/operationPolicy.ts`.
 - Dynamic loader metadata belongs under `nodes/Dokaai/loaders/config.ts`.

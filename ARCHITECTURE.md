@@ -25,6 +25,7 @@ credentials/
 nodes/Dokaai/Dokaai.node.ts
 nodes/Dokaai/GenericFunctions.ts
 nodes/Dokaai/OperationDescription.ts
+nodes/Dokaai/descriptions/
 nodes/Dokaai/operations.ts
 nodes/Dokaai/loaders/
 nodes/Dokaai/openapi/
@@ -63,8 +64,17 @@ description, credentials, load methods, and execution.
 `nodes/Dokaai/operations.ts` owns the selected OpenAPI operation IDs grouped by
 n8n resource. This is the n8n operation source of truth.
 
-`nodes/Dokaai/OperationDescription.ts` owns n8n resource labels, operation
-selectors, and field generation from the selected operation IDs.
+`nodes/Dokaai/OperationDescription.ts` is the thin composition export for node
+description pieces.
+
+`nodes/Dokaai/descriptions/resources.ts` owns the resource selector.
+
+`nodes/Dokaai/descriptions/operations.ts` owns operation selector generation.
+
+`nodes/Dokaai/descriptions/fields.ts` owns OpenAPI-driven field generation.
+
+`nodes/Dokaai/descriptions/resourceMapper.ts` owns n8n resource mapper field
+definitions.
 
 `nodes/Dokaai/loaders/config.ts` owns dynamic dropdown and resource mapper
 metadata, including loader operation IDs, dependencies, and static query values.
