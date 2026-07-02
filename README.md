@@ -159,5 +159,40 @@ This package follows n8n community node conventions:
 - `package.json > n8n.credentials` points to the compiled credential file
 - `dist` is generated before publish
 
-For verification in the n8n Creator Portal, publish through npm with the
-required npm/GitHub provenance flow described by n8n.
+Run the local release readiness check:
+
+```bash
+npm run check
+```
+
+This runs generated tests, validates OpenAPI config, typechecks, builds, and
+checks the npm package contents.
+
+## Public Release
+
+n8n community nodes are public npm packages. Creator Portal verification
+requires publishing from GitHub Actions with npm provenance.
+
+One-time npm setup:
+
+1. Create the public package name on npm by publishing the first release through GitHub Actions.
+2. In npm package settings, add a trusted publisher:
+   - Publisher: GitHub Actions
+   - Repository owner: your GitHub org/user
+   - Repository name: `n8n-nodes-dokaai`
+   - Workflow filename: `publish.yml`
+3. If trusted publishing is not available, add an npm granular access token as the GitHub Actions secret `NPM_TOKEN`.
+
+Release flow:
+
+```bash
+npm version patch
+git push
+git push --tags
+```
+
+Pushing a version tag like `0.1.1` triggers `.github/workflows/publish.yml`,
+which runs tests, builds, and publishes with provenance.
+
+After npm publish succeeds, submit the package in the n8n Creator Portal for
+verification.

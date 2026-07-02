@@ -13,6 +13,11 @@
   "bugs": {
     "url": "https://github.com/dokaai/n8n-nodes-dokaai/issues"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
+  },
   "keywords": [
     "n8n-community-node-package",
     "n8n",
@@ -20,7 +25,10 @@
   ],
   "scripts": {
     "build": "node scripts/clean-dist.js && tsc -p tsconfig.json && mkdir -p dist/api dist/nodes/Dokaai && cp api/index.json dist/api/index.json && cp nodes/Dokaai/dokaai.svg dist/nodes/Dokaai/dokaai.icon.svg",
+    "check": "npm test && npm run build && npm pack --dry-run --cache .npm-cache",
     "generate:tests": "node scripts/generate-openapi-tests.js",
+    "prepack": "npm run build",
+    "release": "npm publish --provenance --access public",
     "validate:openapi-config": "node scripts/validate-openapi-config.js",
     "test": "npm run test:all",
     "test:all": "npm run generate:tests && npm run validate:openapi-config && npm run typecheck && node --require ./test/register-typescript.cjs --test test/unit/*.test.js test/integration/*.test.js",
@@ -28,9 +36,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "files": [
-    "dist",
-    "api",
-    "nodes/**/*.svg"
+    "dist"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
@@ -42,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@n8n/node-cli": "^0.23.1",
     "n8n-workflow": "^1.82.0",
     "typescript": "^5.9.3"
   }
