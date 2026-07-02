@@ -1,28 +1,36 @@
-# Dokaai n8n Node
+# Dokaai n8n Community Node
 
-n8n community node package for Dokaai.
+n8n community node package for Dokaai, generated from the Dokaai OpenAPI
+contract.
 
-The node uses `api/index.json` as the OpenAPI source and exposes the selected
-operations through n8n-style resources and operations.
+The API source of truth is `api/index.json`. The node exposes selected OpenAPI
+operations as n8n resources and operations. Normal REST operations should not
+have hand-written request modules.
 
-## Structure
-
-- `credentials/` defines the Dokaai account credentials.
-- `api/index.json` is the OpenAPI contract bundled into the npm package.
-- `nodes/Dokaai/Dokaai.node.ts` is the thin n8n node entry point.
-- `nodes/Dokaai/OperationDescription.ts` defines n8n resources, operations, and fields.
-- `nodes/Dokaai/GenericFunctions.ts` executes the selected OpenAPI operation.
-- `nodes/Dokaai/openapi/` contains OpenAPI parsing, schema, and request helpers.
-- `nodes/Dokaai/shared/` contains dropdown loaders and shared field/value helpers.
-
-## Local Development
-
-Build the package:
+## Setup
 
 ```bash
 npm install
+npm run typecheck
 npm run build
 ```
+
+## Development Commands
+
+```bash
+npm run typecheck
+npm run build
+```
+
+`npm run typecheck` validates the TypeScript source.
+
+`npm run build` removes stale `dist`, compiles TypeScript, copies
+`api/index.json`, and copies the node icon into `dist`.
+
+n8n loads the compiled files from `dist`, not the TypeScript files directly.
+After changing source files, run `npm run build` and restart n8n.
+
+## Local Docker Setup
 
 When using Docker Desktop for n8n, mount this repository into:
 
@@ -30,11 +38,77 @@ When using Docker Desktop for n8n, mount this repository into:
 /home/node/.n8n/custom/node_modules/n8n-nodes-dokaai
 ```
 
+Set the custom extensions path if your container needs it:
+
+```text
+N8N_CUSTOM_EXTENSIONS=/home/node/.n8n/custom
+```
+
 Then restart the n8n container and search for `Dokaai` in the node picker.
 
-## Adding an Operation
+## How Operations Are Created
 
-1. Update `api/index.json`.
+`nodes/Dokaai/Dokaai.node.ts` registers one n8n node. The node loads:
+
+- credentials from `credentials/DokaaiApi.credentials.ts`
+- resources, operations, and fields from `nodes/Dokaai/OperationDescription.ts`
+- dynamic dropdowns and resource mappers from `nodes/Dokaai/shared/loadOptions.ts`
+- request execution from `nodes/Dokaai/GenericFunctions.ts`
+
+OpenAPI drives:
+
+- URL and method from the OpenAPI path item
+- auth headers from `securitySchemes`
+- n8n fields from path/query params and JSON request body schema
+- request body wrappers by detecting a single required object body property
+- enums as dropdowns
+- arrays of objects as repeatable field groups
+- arrays of primitives as repeatable value groups
+
+## Current Resources
+
+Customer:
+
+- `addCustomersToPool`
+- `updateCustomerInPool`
+- `removeCustomerFromPool`
+- `getPoolCustomers`
+- `getPoolCustomerById`
+
+Custom Attribute:
+
+- `addCustomerCustomAttribute`
+
+Notification Handler:
+
+- `triggerNotificationHandler`
+- `getNotificationHandler`
+- `getAllNotificationHandlersInProject`
+
+Target Audience List:
+
+- `associateCustomerToTargetAudienceList`
+- `deleteCustomerFromTargetAudienceList`
+
+## Dynamic Fields
+
+Dynamic fields are n8n UX adapters on top of the OpenAPI contract:
+
+- `projectId` loads from `getAllProjectsWithService`.
+- `customerPoolId` loads from `getAllCustomerPoolInProject` and depends on `projectId`.
+- `targetAudienceListId` and `filterOutTALId` load from `getTargetAudienceLists` and depend on `projectId`.
+- `notificationHandlerId` loads from `getAllNotificationHandlersInProject` and depends on `projectId`.
+- Customer pool custom attributes load from `getPoolCustomerAttribute` for `addCustomersToPool` and `updateCustomerInPool`.
+
+Dynamic dropdowns include a `None` option so users can clear stale selections.
+
+Customer custom attributes use their plain backend `fieldName`, for example
+`is_vip`. They are submitted as plain request body fields because the selected
+customer operations do not define a `customAttribute` wrapper in OpenAPI.
+
+## Adding An Operation
+
+1. Add or update the endpoint in `api/index.json`.
 2. Add the OpenAPI `operationId` to the correct resource in `nodes/Dokaai/OperationDescription.ts`.
 3. Run:
 
@@ -43,4 +117,21 @@ npm run typecheck
 npm run build
 ```
 
-Restart n8n after building so it reloads the compiled `dist` files.
+4. Restart n8n so it reloads the compiled `dist` files.
+
+Do not add hand-written API request code for normal REST operations. If an
+endpoint needs behavior the generator cannot infer, add generic inference
+support or a small reusable loader/resource-mapper adapter first.
+
+## Publishing Shape
+
+This package follows n8n community node conventions:
+
+- package name starts with `n8n-nodes-`
+- `keywords` includes `n8n-community-node-package`
+- `package.json > n8n.nodes` points to the compiled node file
+- `package.json > n8n.credentials` points to the compiled credential file
+- `dist` is generated before publish
+
+For verification in the n8n Creator Portal, publish through npm with the
+required npm/GitHub provenance flow described by n8n.
