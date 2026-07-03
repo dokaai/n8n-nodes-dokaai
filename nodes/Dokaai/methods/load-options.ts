@@ -14,7 +14,7 @@ import {
 	dynamicLoaderConfigs,
 } from '../loaders/config';
 import { buildRequestOptions, findOperationById } from '../openapi/runtime';
-import { dokaaiOpenApiDocument } from './document';
+import { dokaaiOpenApiDocument } from '../shared/document';
 
 const clearSelectionOption: INodePropertyOptions = {
 	name: 'None',

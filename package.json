@@ -41,10 +41,10 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/DokaaiApi.credentials.js"
+      "dist/credentials/dokaai.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Dokaai/Dokaai.node.js"
+      "dist/nodes/Dokaai/dokaai.node.js"
     ]
   },
   "devDependencies": {

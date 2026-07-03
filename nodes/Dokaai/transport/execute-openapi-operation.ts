@@ -1,13 +1,9 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
 
-import { buildRequestOptions, findOperationById } from './openapi/runtime';
-import { getJsonRequestSchema } from './openapi/schema';
-import { dokaaiOpenApiDocument } from './shared/document';
-import { dokaaiLoadOptions, dokaaiResourceMapping } from './shared/loadOptions';
-import { readOperationValues } from './shared/values';
-
-export { dokaaiLoadOptions };
-export { dokaaiResourceMapping };
+import { buildRequestOptions, findOperationById } from '../openapi/runtime';
+import { getJsonRequestSchema } from '../openapi/schema';
+import { dokaaiOpenApiDocument } from '../shared/document';
+import { readOperationValues } from '../shared/values';
 
 const readErrorDetails = (error: unknown): string => {
 	if (typeof error === 'object' && error !== null) {

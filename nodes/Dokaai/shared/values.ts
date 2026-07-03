@@ -7,7 +7,7 @@ import {
 	inferBodyRoot,
 	operationBodySchema,
 	supportsCustomerAttributeFields,
-} from './operationPolicy';
+} from './operation-policy';
 
 export const parseJsonParameter = (value: unknown, fieldName: string): unknown => {
 	if (value === undefined || value === null || value === '') {

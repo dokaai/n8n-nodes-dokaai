@@ -33,3 +33,5 @@ export class DokaaiApi implements ICredentialType {
 		},
 	];
 }
+
+export { DokaaiApi as dokaai };

@@ -26,6 +26,7 @@ export type OpenApiParameter = {
 
 export type OpenApiOperation = {
 	operationId?: string;
+	tags?: string[];
 	summary?: string;
 	description?: string;
 	parameters?: OpenApiParameter[];

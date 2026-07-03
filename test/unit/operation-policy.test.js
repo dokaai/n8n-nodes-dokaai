@@ -6,7 +6,7 @@ const {
 	inferBodyRoot,
 	operationBodySchema,
 	supportsCustomerAttributeFields,
-} = require('../../nodes/Dokaai/shared/operationPolicy');
+} = require('../../nodes/Dokaai/shared/operation-policy');
 
 const operationWithCustomerDataRoot = {
 	operationId: 'addCustomersToPool',

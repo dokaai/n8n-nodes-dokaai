@@ -1,0 +1,7 @@
+dist
+node_modules
+.git
+.npm-cache
+*.tgz
+.DS_Store
+n8n-data

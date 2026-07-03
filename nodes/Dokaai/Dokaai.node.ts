@@ -6,8 +6,9 @@ import type {
 } from 'n8n-workflow';
 import { NodeConnectionTypes } from 'n8n-workflow';
 
-import { dokaaiLoadOptions, dokaaiResourceMapping, executeOpenApiOperation } from './GenericFunctions';
-import { operationFields, operationOptions, resourceOptions } from './OperationDescription';
+import { operationFields, operationOptions, resourceOptions } from './descriptions';
+import { dokaaiLoadOptions, dokaaiResourceMapping } from './methods/load-options';
+import { executeOpenApiOperation } from './transport/execute-openapi-operation';
 
 export class Dokaai implements INodeType {
 	description: INodeTypeDescription = {
@@ -54,3 +55,5 @@ export class Dokaai implements INodeType {
 		return [returnData];
 	}
 }
+
+export { Dokaai as dokaai };

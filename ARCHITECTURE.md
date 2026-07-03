@@ -22,11 +22,11 @@ payload builders for normal REST operations.
 ```text
 api/index.json
 credentials/
-nodes/Dokaai/Dokaai.node.ts
-nodes/Dokaai/GenericFunctions.ts
-nodes/Dokaai/OperationDescription.ts
+nodes/Dokaai/dokaai.node.ts
 nodes/Dokaai/descriptions/
-nodes/Dokaai/operations.ts
+nodes/Dokaai/methods/
+nodes/Dokaai/transport/
+nodes/Dokaai/operation-selection.ts
 nodes/Dokaai/loaders/
 nodes/Dokaai/openapi/
 nodes/Dokaai/shared/
@@ -43,14 +43,14 @@ in `package.json`.
 ## Runtime Flow
 
 ```text
-Dokaai.node.ts
+dokaai.node.ts
   -> registers one n8n node
   -> declares credentials
   -> loads resource/operation field descriptions
   -> registers loadOptions and resourceMapping methods
   -> execute()
        -> read selected operationId
-       -> GenericFunctions.executeOpenApiOperation()
+       -> transport/execute-openapi-operation.executeOpenApiOperation()
        -> shared/values builds params and body
        -> openapi/runtime builds HTTP request
        -> n8n httpRequest calls Dokaai API
@@ -58,28 +58,39 @@ Dokaai.node.ts
 
 ## File Responsibilities
 
-`nodes/Dokaai/Dokaai.node.ts` is the thin n8n node shell. It wires
+This follows n8n's recommended modular structure for larger nodes: a required node file, a required credential file, operation descriptions split into modules, optional `methods` for dynamic parameters, and `transport` for API communication.
+
+`nodes/Dokaai/dokaai.node.ts` is the thin n8n node shell. It wires
 description, credentials, load methods, and execution.
 
-`nodes/Dokaai/operations.ts` owns the selected OpenAPI operation IDs grouped by
-n8n resource. This is the n8n operation source of truth.
+`credentials/dokaai.credentials.ts` owns the n8n credential definition. The file basename must be a valid JavaScript property name because n8n loads custom classes through `require(...).<basename>`.
 
-`nodes/Dokaai/OperationDescription.ts` is the thin composition export for node
+`nodes/Dokaai/operation-selection.ts` owns the selected OpenAPI operation IDs. This is
+the n8n operation allow-list.
+
+`nodes/Dokaai/openapi/operations.ts` groups selected operation IDs by each
+operation's first OpenAPI `tags` value. These generated groups become n8n
+resources.
+
+`nodes/Dokaai/descriptions/index.ts` is the thin composition export for node
 description pieces.
 
-`nodes/Dokaai/descriptions/resources.ts` owns the resource selector.
+`nodes/Dokaai/descriptions/resources.ts` owns the resource selector generated
+from OpenAPI tag groups.
 
 `nodes/Dokaai/descriptions/operations.ts` owns operation selector generation.
 
 `nodes/Dokaai/descriptions/fields.ts` owns OpenAPI-driven field generation.
 
-`nodes/Dokaai/descriptions/resourceMapper.ts` owns n8n resource mapper field
+`nodes/Dokaai/descriptions/resource-mapper.ts` owns n8n resource mapper field
 definitions.
 
 `nodes/Dokaai/loaders/config.ts` owns dynamic dropdown and resource mapper
 metadata, including loader operation IDs, dependencies, and static query values.
 
-`nodes/Dokaai/GenericFunctions.ts` owns execution orchestration and API error
+`nodes/Dokaai/descriptions/display-options.ts` owns operation visibility helpers.
+
+`nodes/Dokaai/transport/execute-openapi-operation.ts` owns execution orchestration and API error
 normalization.
 
 `nodes/Dokaai/openapi/runtime.ts` owns URL, method, path-template, auth-header,
@@ -95,10 +106,10 @@ the generator.
 
 `nodes/Dokaai/shared/fields.ts` owns common field-ordering helpers.
 
-`nodes/Dokaai/shared/loadOptions.ts` owns dynamic dropdown loaders and the
+`nodes/Dokaai/methods/load-options.ts` owns dynamic dropdown loaders and the
 customer attribute resource mapper runtime behavior.
 
-`nodes/Dokaai/shared/operationPolicy.ts` owns operation-level policy that is not
+`nodes/Dokaai/shared/operation-policy.ts` owns operation-level policy that is not
 safe to infer directly from raw JSON Schema, such as backend-owned field
 exclusions and body-root inference.
 
@@ -107,8 +118,9 @@ path/query/body values.
 
 ## OpenAPI Field Generation
 
-The node uses only OpenAPI params and request bodies for operation fields:
+The node uses selected operation IDs plus OpenAPI metadata for n8n UI generation:
 
+- first operation tag becomes the n8n resource
 - path params become required n8n fields
 - query params become n8n fields
 - request body properties become n8n fields
@@ -159,10 +171,11 @@ request logic.
 
 Examples:
 
-- Need to expose another operation: add its `operationId` to the correct resource.
+- Need to expose another operation: add its `operationId` to `operation-selection.ts`.
+- Need to change the resource group: change the operation's first OpenAPI tag.
 - Need a nested body: the schema adapter handles nested object properties.
 - Need an array input: the schema adapter handles primitive arrays and object arrays.
-- Need to hide backend-managed fields: add a generic exclusion rule in `operationPolicy.ts`.
+- Need to hide backend-managed fields: add a generic exclusion rule in `operation-policy.ts`.
 - Need a dropdown: add a reusable loader keyed by field name and backed by an OpenAPI operation.
 - Need dynamic schema fields: add a resource mapper backed by an OpenAPI operation.
 
@@ -199,11 +212,12 @@ Unit tests under `test/unit/` cover focused reusable behavior:
 `scripts/generate-openapi-tests.js` derives test fixtures from:
 
 - `api/index.json`
-- `nodes/Dokaai/operations.ts`
+- `nodes/Dokaai/operation-selection.ts`
+- OpenAPI operation tags
 
 The generated integration test covers:
 
-- operation grouping by resource
+- operation grouping by generated resource
 - field generation from OpenAPI schemas
 - request method, URL encoding, headers, query, and body shape
 - customer attribute resource mapper wiring

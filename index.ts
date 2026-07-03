@@ -1,2 +1,2 @@
-export { DokaaiApi } from './credentials/DokaaiApi.credentials';
-export { Dokaai } from './nodes/Dokaai/Dokaai.node';
+export { DokaaiApi } from './credentials/dokaai.credentials';
+export { Dokaai } from './nodes/Dokaai/dokaai.node';

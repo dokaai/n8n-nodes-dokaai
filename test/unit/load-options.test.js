@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 
-const { dokaaiLoadOptions } = require('../../nodes/Dokaai/shared/loadOptions');
+const { dokaaiLoadOptions } = require('../../nodes/Dokaai/methods/load-options');
 
 const contextFor = ({ currentParameters = {}, response, error } = {}) => ({
 	getCurrentNodeParameter(name) {

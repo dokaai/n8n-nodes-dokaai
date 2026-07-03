@@ -3,7 +3,6 @@ import type { INodeProperties } from 'n8n-workflow';
 import { dynamicParameterLoaders } from '../loaders/config';
 import { findOperationById } from '../openapi/runtime';
 import { buildNodeProperty, buildPropertiesFromObjectSchema } from '../openapi/schema';
-import { operationsByResource, type DokaaiResource } from '../operations';
 import { dokaaiOpenApiDocument } from '../shared/document';
 import { sortPriorityFieldsFirst } from '../shared/fields';
 import {
@@ -11,17 +10,18 @@ import {
 	inferBodyRoot,
 	operationBodySchema,
 	supportsCustomerAttributeFields,
-} from '../shared/operationPolicy';
-import { operationDisplayOptions } from './displayOptions';
-import { buildCustomerAttributeResourceMapper } from './resourceMapper';
+} from '../shared/operation-policy';
+import { operationDisplayOptions } from './display-options';
+import { buildCustomerAttributeResourceMapper } from './resource-mapper';
+import { resourceGroups } from './resources';
 
 const parameterDisplayName = (parameterName: string): string | undefined =>
 	parameterName === 'filterOutTALId' ? 'Filter Out Target Audience List' : undefined;
 
-const buildOperationFields = (resource: DokaaiResource): INodeProperties[] =>
-	operationsByResource[resource].flatMap((operationId) => {
+const buildOperationFields = (resource: (typeof resourceGroups)[number]): INodeProperties[] =>
+	resource.operationIds.flatMap((operationId) => {
 		const { operation } = findOperationById(dokaaiOpenApiDocument, operationId);
-		const displayOptions = operationDisplayOptions(resource, operationId);
+		const displayOptions = operationDisplayOptions(resource.value, operationId);
 		const parameters = sortPriorityFieldsFirst(
 			(operation.parameters ?? []).map((parameter) =>
 				buildNodeProperty(parameter.name, parameter.schema, {
@@ -46,9 +46,4 @@ const buildOperationFields = (resource: DokaaiResource): INodeProperties[] =>
 		return [...parameters, ...bodyFields, ...customerAttributeFields];
 	});
 
-export const operationFields: INodeProperties[] = [
-	...buildOperationFields('customer'),
-	...buildOperationFields('customAttribute'),
-	...buildOperationFields('notificationHandler'),
-	...buildOperationFields('targetAudienceList'),
-];
+export const operationFields: INodeProperties[] = resourceGroups.flatMap(buildOperationFields);

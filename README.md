@@ -31,7 +31,7 @@ npm test
 `api/index.json`, and copies the node icon into `dist`.
 
 `npm run generate:tests` rewrites generated operation tests from
-`nodes/Dokaai/operations.ts` and `api/index.json`.
+`nodes/Dokaai/operation-selection.ts`, OpenAPI tags, and `api/index.json`.
 
 `npm run validate:openapi-config` verifies selected operation IDs and dynamic
 loader operation IDs against `api/index.json`.
@@ -65,14 +65,15 @@ Then restart the n8n container and search for `Dokaai` in the node picker.
 
 ## How Operations Are Created
 
-`nodes/Dokaai/Dokaai.node.ts` registers one n8n node. The node loads:
+`nodes/Dokaai/dokaai.node.ts` registers one n8n node. The package follows n8n's modular node structure: required node and credential entry files, plus concern-based folders for descriptions, methods, transport, OpenAPI helpers, and shared conversion utilities. The node loads:
 
-- credentials from `credentials/DokaaiApi.credentials.ts`
-- selected operations from `nodes/Dokaai/operations.ts`
+- credentials from `credentials/dokaai.credentials.ts`
+- selected operation IDs from `nodes/Dokaai/operation-selection.ts`
+- resource groups from each selected OpenAPI operation's first `tags` value
 - resources, operation selectors, generated fields, and resource mappers from `nodes/Dokaai/descriptions/`
-- composed node descriptions from `nodes/Dokaai/OperationDescription.ts`
-- dynamic dropdowns and resource mappers from `nodes/Dokaai/shared/loadOptions.ts`
-- request execution from `nodes/Dokaai/GenericFunctions.ts`
+- composed node descriptions from `nodes/Dokaai/descriptions/index.ts`
+- dynamic dropdowns and resource mapper methods from `nodes/Dokaai/methods/load-options.ts`
+- request execution from `nodes/Dokaai/transport/execute-openapi-operation.ts`
 
 OpenAPI drives:
 
@@ -84,27 +85,26 @@ OpenAPI drives:
 - arrays of objects as repeatable field groups
 - arrays of primitives as repeatable value groups
 
-## Current Resources
+## Current Generated Resources
 
-Customer:
+Resources are generated from OpenAPI tags for the selected operation IDs.
+
+Customer Pools:
 
 - `addCustomersToPool`
 - `updateCustomerInPool`
 - `removeCustomerFromPool`
 - `getPoolCustomers`
 - `getPoolCustomerById`
-
-Custom Attribute:
-
 - `addCustomerCustomAttribute`
 
-Notification Handler:
+Notification Handlers:
 
 - `triggerNotificationHandler`
 - `getNotificationHandler`
 - `getAllNotificationHandlersInProject`
 
-Target Audience List:
+Target Audience Lists:
 
 - `associateCustomerToTargetAudienceList`
 - `deleteCustomerFromTargetAudienceList`
@@ -129,8 +129,9 @@ customer operations do not define a `customAttribute` wrapper in OpenAPI.
 ## Adding An Operation
 
 1. Add or update the endpoint in `api/index.json`.
-2. Add the OpenAPI `operationId` to the correct resource in `nodes/Dokaai/operations.ts`.
-3. Run:
+2. Add the OpenAPI `operationId` to `nodes/Dokaai/operation-selection.ts`.
+3. Ensure the backend OpenAPI operation has the desired first `tags` value; n8n resources are generated from that tag.
+4. Run:
 
 ```bash
 npm run typecheck
@@ -143,7 +144,7 @@ Run the generated test suite:
 npm test
 ```
 
-4. Restart n8n so it reloads the compiled `dist` files.
+5. Restart n8n so it reloads the compiled `dist` files.
 
 Do not add hand-written API request code for normal REST operations. If an
 endpoint needs behavior the generator cannot infer, add generic inference

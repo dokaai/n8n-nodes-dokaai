@@ -1,20 +1,20 @@
 import type { INodeProperties } from 'n8n-workflow';
 
 import { findOperationById, humanize } from '../openapi/runtime';
-import { operationsByResource, type DokaaiResource } from '../operations';
 import { dokaaiOpenApiDocument } from '../shared/document';
+import { resourceGroups } from './resources';
 
-const buildOperationOptions = (resource: DokaaiResource): INodeProperties => ({
+const buildOperationOptions = (resource: (typeof resourceGroups)[number]): INodeProperties => ({
 	displayName: 'Operation',
 	name: 'operation',
 	type: 'options',
 	noDataExpression: true,
 	displayOptions: {
 		show: {
-			resource: [resource],
+			resource: [resource.value],
 		},
 	},
-	options: operationsByResource[resource].map((operationId) => {
+	options: resource.operationIds.map((operationId) => {
 		const { operation } = findOperationById(dokaaiOpenApiDocument, operationId);
 
 		return {
@@ -24,12 +24,7 @@ const buildOperationOptions = (resource: DokaaiResource): INodeProperties => ({
 			action: humanize(operationId),
 		};
 	}),
-	default: operationsByResource[resource][0],
+	default: resource.operationIds[0],
 });
 
-export const operationOptions: INodeProperties[] = [
-	buildOperationOptions('customer'),
-	buildOperationOptions('customAttribute'),
-	buildOperationOptions('notificationHandler'),
-	buildOperationOptions('targetAudienceList'),
-];
+export const operationOptions: INodeProperties[] = resourceGroups.map(buildOperationOptions);

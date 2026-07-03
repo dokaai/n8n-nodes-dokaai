@@ -5,7 +5,8 @@ require(path.join(root, 'test/register-typescript.cjs'));
 
 const { dokaaiOpenApiDocument } = require(path.join(root, 'nodes/Dokaai/shared/document'));
 const { HTTP_METHODS, findOperationById } = require(path.join(root, 'nodes/Dokaai/openapi/runtime'));
-const { operationsByResource } = require(path.join(root, 'nodes/Dokaai/operations'));
+const { groupOperationIdsByFirstTag } = require(path.join(root, 'nodes/Dokaai/openapi/operations'));
+const { selectedOperationIds } = require(path.join(root, 'nodes/Dokaai/operation-selection'));
 const {
 	customerAttributeMapperConfig,
 	dynamicLoaderConfigs,
@@ -24,15 +25,19 @@ for (const pathItem of Object.values(dokaaiOpenApiDocument.paths)) {
 	}
 }
 
-const selectedOperationIds = Object.values(operationsByResource).flat();
 const seenSelectedOperationIds = new Set();
+const resourceGroups = groupOperationIdsByFirstTag(dokaaiOpenApiDocument, selectedOperationIds);
 
-for (const [resource, operationIds] of Object.entries(operationsByResource)) {
-	if (operationIds.length === 0) {
-		errors.push(`Resource "${resource}" does not select any operations.`);
+if (resourceGroups.length === 0) {
+	errors.push('No resource groups were generated from selected operation tags.');
+}
+
+for (const resource of resourceGroups) {
+	if (resource.operationIds.length === 0) {
+		errors.push(`Resource "${resource.value}" does not select any operations.`);
 	}
 
-	for (const operationId of operationIds) {
+	for (const operationId of resource.operationIds) {
 		if (seenSelectedOperationIds.has(operationId)) {
 			errors.push(`Operation "${operationId}" is selected more than once.`);
 		}
@@ -87,5 +92,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-	`Validated ${selectedOperationIds.length} selected operation(s) and ${Object.keys(dynamicLoaderConfigs).length + 1} loader config(s).`,
+	`Validated ${selectedOperationIds.length} selected operation(s), ${resourceGroups.length} generated resource group(s), and ${Object.keys(dynamicLoaderConfigs).length + 1} loader config(s).`,
 );
