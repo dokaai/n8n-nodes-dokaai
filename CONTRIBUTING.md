@@ -98,3 +98,5 @@ npm pack
 ```
 
 Inspect the packed files before publishing to npm.
+
+For the full npm and GitHub Actions release flow, see `docs/RELEASE.md`.

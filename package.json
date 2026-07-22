@@ -32,6 +32,7 @@
     "generate:tests": "node scripts/generate-openapi-tests.js",
     "prepack": "npm run build",
     "release": "npm publish --provenance --access public",
+    "release:local": "npm publish --access public --provenance=false",
     "validate:openapi-config": "node scripts/validate-openapi-config.js",
     "test": "npm run test:all",
     "test:all": "npm run generate:tests && npm run validate:openapi-config && npm run typecheck && node --require ./test/register-typescript.cjs --test test/unit/*.test.js test/integration/*.test.js",
@@ -43,15 +44,18 @@
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
+    "strict": true,
     "credentials": [
       "dist/credentials/dokaai.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Dokaai/dokaai.node.js"
+      "dist/nodes/Dokaai/Dokaai.node.js"
     ]
   },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
   "devDependencies": {
-    "@n8n/node-cli": "^0.23.1",
     "n8n-workflow": "^1.82.0",
     "typescript": "^5.9.3"
   }

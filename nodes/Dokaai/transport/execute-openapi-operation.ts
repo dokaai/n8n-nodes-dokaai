@@ -48,5 +48,8 @@ export const executeOpenApiOperation = async (
 
 	return {
 		json: response,
+		pairedItem: {
+			item: itemIndex,
+		},
 	};
 };

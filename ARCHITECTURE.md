@@ -22,7 +22,7 @@ payload builders for normal REST operations.
 ```text
 api/index.json
 credentials/
-nodes/Dokaai/dokaai.node.ts
+nodes/Dokaai/Dokaai.node.ts
 nodes/Dokaai/descriptions/
 nodes/Dokaai/methods/
 nodes/Dokaai/transport/
@@ -43,7 +43,7 @@ in `package.json`.
 ## Runtime Flow
 
 ```text
-dokaai.node.ts
+Dokaai.node.ts
   -> registers one n8n node
   -> declares credentials
   -> loads resource/operation field descriptions
@@ -60,7 +60,7 @@ dokaai.node.ts
 
 This follows n8n's recommended modular structure for larger nodes: a required node file, a required credential file, operation descriptions split into modules, optional `methods` for dynamic parameters, and `transport` for API communication.
 
-`nodes/Dokaai/dokaai.node.ts` is the thin n8n node shell. It wires
+`nodes/Dokaai/Dokaai.node.ts` is the thin n8n node shell. It wires
 description, credentials, load methods, and execution.
 
 `credentials/dokaai.credentials.ts` owns the n8n credential definition. The file basename must be a valid JavaScript property name because n8n loads custom classes through `require(...).<basename>`.
