@@ -1,199 +1,154 @@
-# Dokaai n8n Community Node
+# n8n-nodes-dokaai
 
-n8n community node package for Dokaai, generated from the Dokaai OpenAPI
-contract.
+This is an n8n community node package for Dokaai. It lets you use selected
+Dokaai API operations directly inside n8n workflows.
 
-The API source of truth is `api/index.json`. The node exposes selected OpenAPI
-operations as n8n resources and operations. Normal REST operations should not
-have hand-written request modules.
+The package is generated from the Dokaai OpenAPI contract and exposes Dokaai
+resources, operations, dynamic dropdowns, and credential handling through one
+n8n node named `Dokaai`.
 
-## Setup
+## Installation
 
-```bash
-npm install
-npm run typecheck
-npm run build
-npm run validate:openapi-config
-npm test
-```
+Install the package from n8n's Community Nodes screen.
 
-## Development Commands
-
-```bash
-npm run typecheck
-npm run build
-npm test
-```
-
-`npm run typecheck` validates the TypeScript source.
-
-`npm run build` removes stale `dist`, compiles TypeScript, copies
-`api/index.json`, and copies the node icon into `dist`.
-
-`npm run generate:tests` rewrites generated operation tests from
-`nodes/Dokaai/operation-selection.ts`, OpenAPI tags, and `api/index.json`.
-
-`npm run validate:openapi-config` verifies selected operation IDs and dynamic
-loader operation IDs against `api/index.json`.
-
-`npm test` is the single full test command. It runs `generate:tests`,
-`validate:openapi-config`, `tsc --noEmit`, then runs Node's built-in test runner
-against the TypeScript source for unit tests and generated integration tests.
-
-`npm run test:unit` is available when you only want the focused unit tests for
-schema mapping, operation policy, request value conversion, and request
-construction.
-
-n8n loads the compiled files from `dist`, not the TypeScript files directly.
-After changing source files, run `npm run build` and restart n8n.
-
-## Local Docker Setup
-
-When using Docker Desktop for n8n, mount this repository into:
+1. Open n8n.
+2. Go to **Settings**.
+3. Open **Community Nodes**.
+4. Select **Install**.
+5. Enter this npm package name:
 
 ```text
-/home/node/.n8n/custom/node_modules/n8n-nodes-dokaai
+n8n-nodes-dokaai
 ```
 
-Set the custom extensions path if your container needs it:
+6. Confirm the installation.
+7. Restart n8n if your installation type requires it.
 
-```text
-N8N_CUSTOM_EXTENSIONS=/home/node/.n8n/custom
-```
+After installation, search for `Dokaai` in the n8n node picker.
 
-Then restart the n8n container and search for `Dokaai` in the node picker.
+## Credentials
 
-## How Operations Are Created
+Create a new `Dokaai API` credential in n8n and provide:
 
-`nodes/Dokaai/dokaai.node.ts` registers one n8n node. The package follows n8n's modular node structure: required node and credential entry files, plus concern-based folders for descriptions, methods, transport, OpenAPI helpers, and shared conversion utilities. The node loads:
+- `Client Key`
+- `Client Secret`
 
-- credentials from `credentials/dokaai.credentials.ts`
-- selected operation IDs from `nodes/Dokaai/operation-selection.ts`
-- resource groups from each selected OpenAPI operation's first `tags` value
-- resources, operation selectors, generated fields, and resource mappers from `nodes/Dokaai/descriptions/`
-- composed node descriptions from `nodes/Dokaai/descriptions/index.ts`
-- dynamic dropdowns and resource mapper methods from `nodes/Dokaai/methods/load-options.ts`
-- request execution from `nodes/Dokaai/transport/execute-openapi-operation.ts`
+These values are sent to the Dokaai API using the authentication headers
+defined in the Dokaai OpenAPI contract.
 
-OpenAPI drives:
+## Basic Usage
 
-- URL and method from the OpenAPI path item
-- auth headers from `securitySchemes`
-- n8n fields from path/query params and JSON request body schema
-- request body wrappers by detecting a single required object body property
-- enums as dropdowns
-- arrays of objects as repeatable field groups
-- arrays of primitives as repeatable value groups
+1. Add the `Dokaai` node to a workflow.
+2. Select or create your `Dokaai API` credential.
+3. Choose a resource.
+4. Choose an operation.
+5. Fill in the required fields.
+6. Execute the workflow.
 
-## Current Generated Resources
+Some fields load options dynamically from Dokaai, such as projects, customer
+pools, target audience lists, and notification handlers. Select the parent
+field first when a dropdown depends on another value.
 
-Resources are generated from OpenAPI tags for the selected operation IDs.
+## Supported Resources
 
-Customer Pools:
+The current package exposes selected operations for these Dokaai resources.
 
-- `addCustomersToPool`
-- `updateCustomerInPool`
-- `removeCustomerFromPool`
-- `getPoolCustomers`
-- `getPoolCustomerById`
-- `addCustomerCustomAttribute`
+### Customer Pools
 
-Notification Handlers:
+- Add customers to a pool
+- Update a customer in a pool
+- Remove a customer from a pool
+- Get pool customers
+- Get a pool customer by ID
+- Add a customer custom attribute
 
-- `triggerNotificationHandler`
-- `getNotificationHandler`
-- `getAllNotificationHandlersInProject`
+### Notification Handlers
 
-Target Audience Lists:
+- Trigger a notification handler
+- Get a notification handler
+- Get all notification handlers in a project
 
-- `associateCustomerToTargetAudienceList`
-- `deleteCustomerFromTargetAudienceList`
+### Target Audience Lists
+
+- Associate a customer to a target audience list
+- Delete a customer from a target audience list
 
 ## Dynamic Fields
 
-Dynamic fields are n8n UX adapters on top of the OpenAPI contract:
+The node includes dynamic n8n fields backed by Dokaai API calls:
 
-- `projectId` loads from `getAllProjectsWithService`.
-- `customerPoolId` loads from `getAllCustomerPoolInProject` and depends on `projectId`.
-- `targetAudienceListId` and `filterOutTALId` load from `getTargetAudienceLists` and depend on `projectId`.
-- `notificationHandlerId` loads from `getAllNotificationHandlersInProject` and depends on `projectId`.
-- Customer pool custom attributes load from `getPoolCustomerAttribute` for `addCustomersToPool` and `updateCustomerInPool`.
+- `projectId` loads available projects.
+- `customerPoolId` loads customer pools for the selected project.
+- `targetAudienceListId` loads target audience lists for the selected project.
+- `filterOutTALId` loads target audience lists for the selected project.
+- `notificationHandlerId` loads notification handlers for the selected project.
+- Customer custom attributes load for supported customer pool operations.
 
-Dynamic dropdowns include a `None` option so users can clear stale selections.
-Dropdown loader metadata lives in `nodes/Dokaai/loaders/config.ts`.
+Dynamic dropdowns include a `None` option so stale selections can be cleared.
 
-Customer custom attributes use their plain backend `fieldName`, for example
-`is_vip`. They are submitted as plain request body fields because the selected
-customer operations do not define a `customAttribute` wrapper in OpenAPI.
+## Package Contents
 
-## Adding An Operation
+The npm package publishes the compiled n8n node from `dist`, including the node
+icon and the OpenAPI contract needed at runtime.
 
-1. Add or update the endpoint in `api/index.json`.
-2. Add the OpenAPI `operationId` to `nodes/Dokaai/operation-selection.ts`.
-3. Ensure the backend OpenAPI operation has the desired first `tags` value; n8n resources are generated from that tag.
-4. Run:
+Repository-only files such as tests, scripts, and raw TypeScript source are not
+published as runtime package files.
 
-```bash
-npm run typecheck
-npm run build
+## Troubleshooting
+
+### The Dokaai node does not appear in n8n
+
+Confirm that the package name was entered exactly:
+
+```text
+n8n-nodes-dokaai
 ```
 
-Run the generated test suite:
+Then restart n8n and search for `Dokaai` again.
+
+### A dynamic dropdown is empty
+
+Check that:
+
+- the `Dokaai API` credential is valid
+- the required parent field is selected first
+- the credential has access to the selected project or resource
+
+### An operation fails
+
+Open the failed execution in n8n and inspect the node error. API errors are
+returned with the Dokaai operation ID so the failing operation is easier to
+identify.
+
+## Maintainers
+
+This repository uses Node.js `22.22.2`. For local development and release
+checks:
 
 ```bash
-npm test
-```
-
-5. Restart n8n so it reloads the compiled `dist` files.
-
-Do not add hand-written API request code for normal REST operations. If an
-endpoint needs behavior the generator cannot infer, add generic inference
-support or a small reusable loader/resource-mapper adapter first.
-
-## Publishing Shape
-
-This package follows n8n community node conventions:
-
-- package name starts with `n8n-nodes-`
-- `keywords` includes `n8n-community-node-package`
-- `package.json > n8n.nodes` points to the compiled node file
-- `package.json > n8n.credentials` points to the compiled credential file
-- `dist` is generated before publish
-
-Run the local release readiness check:
-
-```bash
+nvm use
+npm ci
 npm run check
 ```
 
-This runs generated tests, validates OpenAPI config, typechecks, builds, and
-checks the npm package contents.
+`npm run check` runs generated tests, validates the OpenAPI configuration,
+typechecks, builds the package, and verifies the npm package contents with
+`npm pack --dry-run`.
 
-## Public Release
+For contributor workflow details, see
+[CONTRIBUTING.md](https://github.com/dokaai/n8n-nodes-dokaai/blob/main/CONTRIBUTING.md).
 
-n8n community nodes are public npm packages. Creator Portal verification
-requires publishing from GitHub Actions with npm provenance.
+For internal architecture and OpenAPI generation details, see
+[ARCHITECTURE.md](https://github.com/dokaai/n8n-nodes-dokaai/blob/main/ARCHITECTURE.md).
 
-One-time npm setup:
+For npm publishing details, see
+[docs/RELEASE.md](https://github.com/dokaai/n8n-nodes-dokaai/blob/main/docs/RELEASE.md).
 
-1. Create the public package name on npm by publishing the first release through GitHub Actions.
-2. In npm package settings, add a trusted publisher:
-   - Publisher: GitHub Actions
-   - Repository owner: your GitHub org/user
-   - Repository name: `n8n-nodes-dokaai`
-   - Workflow filename: `publish.yml`
-3. If trusted publishing is not available, add an npm granular access token as the GitHub Actions secret `NPM_TOKEN`.
+## Resources
 
-Release flow:
+- [Dokaai documentation](https://docs.dokaai.com/)
+- [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
 
-```bash
-npm version patch
-git push
-git push --tags
-```
+## License
 
-Pushing a version tag like `0.1.1` triggers `.github/workflows/publish.yml`,
-which runs tests, builds, and publishes with provenance.
-
-After npm publish succeeds, submit the package in the n8n Creator Portal for
-verification.
+[MIT](https://github.com/dokaai/n8n-nodes-dokaai/blob/main/LICENSE)
