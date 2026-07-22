@@ -7,14 +7,10 @@ const contextFor = ({ currentParameters = {}, response, error } = {}) => ({
 	getCurrentNodeParameter(name) {
 		return currentParameters[name];
 	},
-	async getCredentials() {
-		return {
-			clientKey: 'key',
-			clientSecret: 'secret',
-		};
-	},
 	helpers: {
-		async httpRequest() {
+		async httpRequestWithAuthentication(credentialsType) {
+			assert.equal(credentialsType, 'dokaaiApi');
+
 			if (error) {
 				throw error;
 			}

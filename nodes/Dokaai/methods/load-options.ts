@@ -104,12 +104,13 @@ const loadOperationOptions = async (
 	operationId: string,
 	values: Record<string, unknown>,
 ): Promise<INodePropertyOptions[]> => {
-	const credentials = await context.getCredentials('dokaaiApi');
 	const definition = findOperationById(dokaaiOpenApiDocument, operationId);
 
 	try {
-		const response = await context.helpers.httpRequest(
-			buildRequestOptions(dokaaiOpenApiDocument, definition, values, credentials),
+		const response = await context.helpers.httpRequestWithAuthentication.call(
+			context,
+			'dokaaiApi',
+			buildRequestOptions(dokaaiOpenApiDocument, definition, values),
 		);
 		const options = mapIdNameOptions(readDataArray(response));
 
@@ -167,14 +168,14 @@ async function loadCustomerAttributeFields(this: ILoadOptionsFunctions): Promise
 		};
 	}
 
-	const credentials = await this.getCredentials('dokaaiApi');
 	const definition = findOperationById(dokaaiOpenApiDocument, customerAttributeMapperConfig.operationId);
-	const response = await this.helpers.httpRequest(
+	const response = await this.helpers.httpRequestWithAuthentication.call(
+		this,
+		'dokaaiApi',
 		buildRequestOptions(
 			dokaaiOpenApiDocument,
 			definition,
 			values,
-			credentials,
 		),
 	);
 	const fields = mapCustomerAttributeFields(readDataArray(response));

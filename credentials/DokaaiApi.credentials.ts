@@ -11,6 +11,16 @@ export class DokaaiApi implements ICredentialType {
 
 	documentationUrl = 'https://docs.dokaai.com';
 
+	authenticate = {
+		type: 'generic' as const,
+		properties: {
+			headers: {
+				'x-client-key': '={{$credentials.clientKey}}',
+				'x-client-secret': '={{$credentials.clientSecret}}',
+			},
+		},
+	};
+
 	test: ICredentialTestRequest = {
 		request: {
 			method: 'GET',

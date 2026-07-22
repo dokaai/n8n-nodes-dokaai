@@ -101,7 +101,7 @@ export const buildRequestOptions = (
 	document: OpenApiDocument,
 	definition: OpenApiOperationDefinition,
 	values: Record<string, unknown>,
-	credentials: IDataObject,
+	credentials?: IDataObject,
 ): IHttpRequestOptions => {
 	const url = `${getOpenApiBaseUrl(document)}${pathFromTemplate(definition.path, values)}`;
 	const qs: IDataObject = {};
@@ -124,7 +124,7 @@ export const buildRequestOptions = (
 		url,
 		headers: {
 			Accept: 'application/json',
-			...buildAuthHeaders(document, credentials),
+			...(credentials ? buildAuthHeaders(document, credentials) : {}),
 		},
 		qs,
 		json: true,

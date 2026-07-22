@@ -32,15 +32,16 @@ export const executeOpenApiOperation = async (
 	itemIndex: number,
 	operationId: string,
 ): Promise<INodeExecutionData> => {
-	const credentials = await context.getCredentials('dokaaiApi');
 	const definition = findOperationById(dokaaiOpenApiDocument, operationId);
 	const bodySchema = getJsonRequestSchema(definition.operation.requestBody);
 	const values = readOperationValues(context, definition.operation, bodySchema, itemIndex);
 	let response: IDataObject;
 
 	try {
-		response = await context.helpers.httpRequest(
-			buildRequestOptions(dokaaiOpenApiDocument, definition, values, credentials),
+		response = await context.helpers.httpRequestWithAuthentication.call(
+			context,
+			'dokaaiApi',
+			buildRequestOptions(dokaaiOpenApiDocument, definition, values),
 		);
 	} catch (error) {
 		throw new Error(`Dokaai ${operationId} failed: ${readErrorDetails(error)}`);

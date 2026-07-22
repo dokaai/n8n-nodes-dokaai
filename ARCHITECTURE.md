@@ -63,7 +63,7 @@ This follows n8n's recommended modular structure for larger nodes: a required no
 `nodes/Dokaai/Dokaai.node.ts` is the thin n8n node shell. It wires
 description, credentials, load methods, and execution.
 
-`credentials/dokaai.credentials.ts` owns the n8n credential definition. The file basename must be a valid JavaScript property name because n8n loads custom classes through `require(...).<basename>`.
+`credentials/DokaaiApi.credentials.ts` owns the n8n credential definition. The file basename follows n8n's credential naming convention.
 
 `nodes/Dokaai/operation-selection.ts` owns the selected OpenAPI operation IDs. This is
 the n8n operation allow-list.

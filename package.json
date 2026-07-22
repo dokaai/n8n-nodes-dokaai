@@ -50,7 +50,7 @@
     "n8nNodesApiVersion": 1,
     "strict": true,
     "credentials": [
-      "dist/credentials/dokaai.credentials.js"
+      "dist/credentials/DokaaiApi.credentials.js"
     ],
     "nodes": [
       "dist/nodes/Dokaai/Dokaai.node.js"

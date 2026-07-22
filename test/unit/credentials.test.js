@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 
-const { DokaaiApi } = require('../../credentials/dokaai.credentials');
+const { DokaaiApi } = require('../../credentials/DokaaiApi.credentials');
 
 test('Dokaai API credentials include an n8n credential test request', () => {
 	const credentials = new DokaaiApi();
