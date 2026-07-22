@@ -5795,37 +5795,187 @@
                                 "sms": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "in_app": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "email": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "chat": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "push": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "whatsApp": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -5836,37 +5986,187 @@
                                 "sms": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "in_app": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "email": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "chat": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "push": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "whatsApp": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -6460,37 +6760,187 @@
                                 "sms": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "in_app": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "email": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "chat": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "push": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "whatsApp": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -6501,37 +6951,187 @@
                                 "sms": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "in_app": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "email": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "chat": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "push": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 },
                                 "whatsApp": {
                                   "type": "array",
                                   "items": {
-                                    "type": "string"
+                                    "type": "object",
+                                    "required": [
+                                      "fieldName",
+                                      "fieldType"
+                                    ],
+                                    "properties": {
+                                      "fieldName": {
+                                        "type": "string"
+                                      },
+                                      "fieldType": {
+                                        "type": "string",
+                                        "enum": [
+                                          "string",
+                                          "number",
+                                          "boolean",
+                                          "date",
+                                          "dateTime"
+                                        ]
+                                      },
+                                      "fieldDisplayName": {
+                                        "type": "string"
+                                      },
+                                      "attributeId": {
+                                        "type": "string"
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -7856,8 +8456,27 @@
                                 "type": "string"
                               }
                             },
-                            "dynamicVariables": {},
-                            "templateVariables": {},
+                            "computedVariables": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "name",
+                                  "formula"
+                                ],
+                                "properties": {
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  },
+                                  "formula": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
                             "channelType": {
                               "type": "string",
                               "enum": [
@@ -8318,6 +8937,62 @@
                         {
                           "type": "object",
                           "properties": {
+                            "dynamicVariables": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "fieldName",
+                                  "fieldType"
+                                ],
+                                "properties": {
+                                  "fieldName": {
+                                    "type": "string"
+                                  },
+                                  "fieldType": {
+                                    "type": "string",
+                                    "enum": [
+                                      "string",
+                                      "number",
+                                      "boolean",
+                                      "date",
+                                      "dateTime"
+                                    ]
+                                  },
+                                  "fieldDisplayName": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "templateVariables": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "required": [
+                                  "fieldName",
+                                  "fieldType"
+                                ],
+                                "properties": {
+                                  "fieldName": {
+                                    "type": "string"
+                                  },
+                                  "fieldType": {
+                                    "type": "string",
+                                    "enum": [
+                                      "string",
+                                      "number",
+                                      "boolean",
+                                      "date",
+                                      "dateTime"
+                                    ]
+                                  },
+                                  "fieldDisplayName": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
                             "handlerChannelTemplateProviderSyncState": {
                               "type": "string",
                               "enum": [
@@ -24637,7 +25312,7 @@
   ],
   "servers": [
     {
-      "url": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai",
+      "url": "https://api.dokaai.com/v1/dokaai",
       "description": "Production Server"
     }
   ]

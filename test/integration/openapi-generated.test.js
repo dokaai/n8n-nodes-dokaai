@@ -123,7 +123,7 @@ const operationFixtures = [
         "convertFieldsToString": false
       }
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers",
     "expectedQs": {},
     "expectedBody": {
       "customerData": {
@@ -211,7 +211,7 @@ const operationFixtures = [
         "convertFieldsToString": false
       }
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers/customerId%20value",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers/customerId%20value",
     "expectedQs": {},
     "expectedBody": {
       "name": "name-value",
@@ -251,7 +251,7 @@ const operationFixtures = [
       "projectId": "projectId value",
       "customerId": "customerId value"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customer/customerId%20value/status",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customer/customerId%20value/status",
     "expectedQs": {},
     "expectedAuthHeaders": {
       "x-client-key": "x-client-key-value",
@@ -282,7 +282,7 @@ const operationFixtures = [
       "page": "page-value",
       "size": "size-value"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers",
     "expectedQs": {
       "search": "search-value",
       "searchField": "uniqueCustomerId",
@@ -313,7 +313,7 @@ const operationFixtures = [
       "customerPoolId": "customerPoolId value",
       "attributeTypes": "all"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers/customerId%20value",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/customers/customerId%20value",
     "expectedQs": {
       "attributeTypes": "all"
     },
@@ -348,7 +348,7 @@ const operationFixtures = [
         ]
       }
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/custom-attributes",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/customer/projects/projectId%20value/customer-pools/customerPoolId%20value/custom-attributes",
     "expectedQs": {},
     "expectedBody": {
       "customAttributes": [
@@ -384,7 +384,7 @@ const operationFixtures = [
       "mode": "live",
       "idempotencyKey": "idempotencyKey-value"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/notificationHandlerId%20value/trigger",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/notificationHandlerId%20value/trigger",
     "expectedQs": {},
     "expectedBody": {
       "mode": "live",
@@ -409,7 +409,7 @@ const operationFixtures = [
       "projectId": "projectId value",
       "notificationHandlerId": "notificationHandlerId value"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/notificationHandlerId%20value",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/notificationHandlerId%20value",
     "expectedQs": {},
     "expectedAuthHeaders": {
       "x-client-key": "x-client-key-value",
@@ -434,7 +434,7 @@ const operationFixtures = [
       "page": "page-value",
       "size": "size-value"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/",
     "expectedQs": {
       "search": "search-value",
       "page": "page-value",
@@ -459,7 +459,7 @@ const operationFixtures = [
       "projectId": "projectId value",
       "handlerKey": "handlerKey value"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/key/handlerKey%20value",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/key/handlerKey%20value",
     "expectedQs": {},
     "expectedAuthHeaders": {
       "x-client-key": "x-client-key-value",
@@ -492,7 +492,7 @@ const operationFixtures = [
         ]
       }
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/nudge/projects/projectId%20value/target-audience-lists/targetAudienceListId%20value/customers",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/nudge/projects/projectId%20value/target-audience-lists/targetAudienceListId%20value/customers",
     "expectedQs": {},
     "expectedBody": {
       "customerIds": [
@@ -521,7 +521,7 @@ const operationFixtures = [
       "customerId": "customerId value",
       "projectId": "projectId value"
     },
-    "expectedUrl": "https://api-200422742317.asia-south1.run.app/api/v1/dokaai/nudge/projects/projectId%20value/target-audience-lists/targetAudienceListId%20value/customer/customerId%20value",
+    "expectedUrl": "https://api.dokaai.com/v1/dokaai/nudge/projects/projectId%20value/target-audience-lists/targetAudienceListId%20value/customer/customerId%20value",
     "expectedQs": {},
     "expectedAuthHeaders": {
       "x-client-key": "x-client-key-value",
