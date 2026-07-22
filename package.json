@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-dokaai",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "n8n community node for Dokaai.",
   "license": "MIT",
   "main": "dist/index.js",
