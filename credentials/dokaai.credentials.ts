@@ -1,5 +1,6 @@
 import type {
 	ICredentialType,
+	ICredentialTestRequest,
 	INodeProperties,
 } from 'n8n-workflow';
 
@@ -9,6 +10,17 @@ export class DokaaiApi implements ICredentialType {
 	displayName = 'Dokaai API';
 
 	documentationUrl = 'https://docs.dokaai.com';
+
+	test: ICredentialTestRequest = {
+		request: {
+			method: 'GET',
+			url: 'https://api.dokaai.com/v1/dokaai/opm/organizations/services',
+			headers: {
+				'x-client-key': '={{$credentials.clientKey}}',
+				'x-client-secret': '={{$credentials.clientSecret}}',
+			},
+		},
+	};
 
 	properties: INodeProperties[] = [
 		{
