@@ -1,13 +1,15 @@
-name: Publish
+name: Publish npm package
+run-name: Publish ${{ github.ref_name }}
 
 on:
   push:
     tags:
       - '*.*.*'
+  workflow_dispatch:
 
 jobs:
   publish:
-    name: Publish to npm
+    name: Publish package
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,12 +37,6 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Configure npm token
-        if: ${{ secrets.NPM_TOKEN != '' }}
-        run: npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish with provenance
         run: npm run release
