@@ -40,10 +40,69 @@ npm run check
 This runs generated tests, validates OpenAPI config, typechecks, builds, and
 checks npm package contents with `npm pack --dry-run`.
 
+## Change And Release Workflow
+
+Use this flow when changing the node, updating `api/index.json`, or exposing
+new Dokaai API operations.
+
+Start from the latest `main`:
+
+```bash
+git checkout main
+git pull
+nvm use
+npm ci
+```
+
+Make the source changes:
+
+```bash
+# edit api/index.json
+# edit nodes/Dokaai/operation-selection.ts if you need to expose new operation IDs
+# edit loaders, descriptions, or shared helpers only when the generated behavior needs support
+```
+
+Regenerate generated tests and validate the OpenAPI config:
+
+```bash
+npm run generate:tests
+npm run validate:openapi-config
+```
+
+Run the full local check:
+
+```bash
+npm run check
+```
+
+Commit the code change:
+
+```bash
+git status
+git add -A
+git commit -m "Update Dokaai OpenAPI contract"
+git push
+```
+
+Release a new npm version:
+
+```bash
+npm version patch
+git push
+git push --tags
+```
+
+Use `npm version minor` for larger backwards-compatible feature releases. Use
+`npm version major` only for breaking changes.
+
+The pushed version tag triggers `.github/workflows/publish.yml`, which publishes
+the package to npm through GitHub Actions Trusted Publishing.
+
 ## First Manual Publish
 
-If the package does not exist on npm yet, publish the first version locally
-without provenance:
+If the package does not exist on npm yet and Trusted Publishing cannot be
+configured before first publish, publish the first version locally without
+provenance:
 
 ```bash
 npm run check
@@ -60,15 +119,13 @@ expects publishing from GitHub Actions with npm provenance.
 
 One-time npm setup:
 
-1. Create the public package name on npm by publishing the first release through
-   GitHub Actions.
-2. In npm package settings, add a trusted publisher:
+1. Publish the package once so it exists on npm.
+2. In npm package settings, add a Trusted Publisher:
    - Publisher: GitHub Actions
-   - Repository owner: your GitHub org/user
+   - Repository owner: `dokaai`
    - Repository name: `n8n-nodes-dokaai`
    - Workflow filename: `publish.yml`
-3. If trusted publishing is not available, add an npm granular access token as
-   the GitHub Actions secret `NPM_TOKEN`.
+   - Allowed action: `npm publish`
 
 Release flow:
 

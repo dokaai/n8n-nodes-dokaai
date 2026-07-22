@@ -4,7 +4,11 @@
   "description": "n8n community node for Dokaai.",
   "license": "MIT",
   "main": "dist/index.js",
-  "author": "DokaAI",
+  "author": {
+    "name": "DokaAI",
+    "email": "atuljoshi@dokaai.com",
+    "url": "https://dokaai.com"
+  },
   "homepage": "https://dokaai.com",
   "repository": {
     "type": "git",
