@@ -26,17 +26,20 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: npm
 
-      - name: Update npm
-        run: npm install -g npm@^11.5.1
-
       - name: Install dependencies
         run: npm ci
 
       - name: Test
         run: npm test
 
-      - name: Build
-        run: npm run build
+      - name: Pack package
+        run: npm pack
+
+      - name: Set up Node.js for trusted publishing
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
 
       - name: Publish with provenance
-        run: npm run release
+        run: npm publish ./n8n-nodes-dokaai-*.tgz --access public --provenance
