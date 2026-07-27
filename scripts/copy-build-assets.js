@@ -5,8 +5,7 @@ const rootDir = join(__dirname, '..');
 
 const assets = [
 	['api/index.json', 'dist/api/index.json'],
-	['nodes/Dokaai/dokaai.light.svg', 'dist/nodes/Dokaai/dokaai.light.svg'],
-	['nodes/Dokaai/dokaai.dark.svg', 'dist/nodes/Dokaai/dokaai.dark.svg'],
+	['nodes/Dokaai/dokaai.svg', 'dist/nodes/Dokaai/dokaai.svg'],
 ];
 
 for (const [source, target] of assets) {

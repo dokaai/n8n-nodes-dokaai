@@ -14,10 +14,7 @@ export class Dokaai implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Dokaai',
 		name: 'dokaai',
-		icon: {
-			light: 'file:dokaai.light.svg',
-			dark: 'file:dokaai.dark.svg',
-		},
+		icon: 'file:dokaai.svg',
 		group: ['output'],
 		version: 1,
 		description: 'Use Dokaai APIs in n8n workflows',
@@ -25,7 +22,6 @@ export class Dokaai implements INodeType {
 		defaults: {
 			name: 'Dokaai',
 		},
-		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [

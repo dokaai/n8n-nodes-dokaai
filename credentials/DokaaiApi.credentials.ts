@@ -10,8 +10,8 @@ export class DokaaiApi implements ICredentialType {
 	displayName = 'Dokaai API';
 
 	icon = {
-		light: 'file:../nodes/Dokaai/dokaai.light.svg',
-		dark: 'file:../nodes/Dokaai/dokaai.dark.svg',
+		light: 'file:../nodes/Dokaai/dokaai.svg',
+		dark: 'file:../nodes/Dokaai/dokaai.svg',
 	} as const;
 
 	documentationUrl = 'https://docs.dokaai.com';
