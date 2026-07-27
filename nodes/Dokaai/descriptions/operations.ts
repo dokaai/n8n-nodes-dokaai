@@ -24,7 +24,7 @@ const buildOperationOptions = (resource: (typeof resourceGroups)[number]): INode
 			action: humanize(operationId),
 		};
 	}),
-	default: resource.operationIds[0],
+	default: resource.operationIds[0] ?? '',
 });
 
 export const operationOptions: INodeProperties[] = resourceGroups.map(buildOperationOptions);

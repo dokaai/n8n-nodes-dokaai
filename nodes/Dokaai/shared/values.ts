@@ -1,4 +1,5 @@
-import type { IExecuteFunctions, ResourceMapperValue } from 'n8n-workflow';
+import type { IExecuteFunctions, INode, ResourceMapperValue } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 
 import { normalizeSchema, readSchemaType } from '../openapi/schema';
 import type { JsonSchema, OpenApiOperation } from '../openapi/types';
@@ -9,7 +10,7 @@ import {
 	supportsCustomerAttributeFields,
 } from './operation-policy';
 
-export const parseJsonParameter = (value: unknown, fieldName: string): unknown => {
+export const parseJsonParameter = (value: unknown, fieldName: string, node: INode): unknown => {
 	if (value === undefined || value === null || value === '') {
 		return undefined;
 	}
@@ -21,7 +22,7 @@ export const parseJsonParameter = (value: unknown, fieldName: string): unknown =
 	try {
 		return JSON.parse(value);
 	} catch (error) {
-		throw new Error(`${fieldName} must be valid JSON.`);
+		throw new NodeOperationError(node, `${fieldName} must be valid JSON.`);
 	}
 };
 
@@ -154,6 +155,7 @@ export const readOperationValues = (
 	const bodyRoot = inferBodyRoot(operation);
 	const bodySchema = operationBodySchema(operation, bodyRoot);
 	const excluded = excludedBodyFieldsForOperation(operation);
+	const node = context.getNode();
 
 	for (const parameter of operation.parameters ?? []) {
 		values[parameter.name] = context.getNodeParameter(parameter.name, itemIndex, undefined);
@@ -164,9 +166,9 @@ export const readOperationValues = (
 		const schemaType = readSchemaType(field.schema);
 		const value =
 			schemaType === 'array'
-				? readFixedCollectionValue(parseJsonParameter(rawValue, field.name), field.name)
+				? readFixedCollectionValue(parseJsonParameter(rawValue, field.name, node), field.name)
 				: schemaType === 'object'
-					? parseJsonParameter(rawValue, field.name)
+					? parseJsonParameter(rawValue, field.name, node)
 					: rawValue;
 
 		if (shouldIncludeValue(value)) {

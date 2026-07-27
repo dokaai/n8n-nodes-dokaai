@@ -530,7 +530,16 @@ const operationFixtures = [
   }
 ];
 
+const fakeNode = {
+	name: 'Dokaai',
+	type: 'n8n-nodes-dokaai.dokaai',
+	typeVersion: 1,
+	position: [0, 0],
+	parameters: {},
+};
+
 const getNodeParameterContext = (inputData) => ({
+	getNode: () => fakeNode,
 	getNodeParameter: (name, _itemIndex, defaultValue) =>
 		Object.prototype.hasOwnProperty.call(inputData, name)
 			? inputData[name]

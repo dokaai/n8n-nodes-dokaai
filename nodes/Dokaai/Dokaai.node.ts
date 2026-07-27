@@ -14,7 +14,10 @@ export class Dokaai implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Dokaai',
 		name: 'dokaai',
-		icon: 'file:dokaai.icon.svg',
+		icon: {
+			light: 'file:dokaai.light.svg',
+			dark: 'file:dokaai.dark.svg',
+		},
 		group: ['output'],
 		version: 1,
 		description: 'Use Dokaai APIs in n8n workflows',

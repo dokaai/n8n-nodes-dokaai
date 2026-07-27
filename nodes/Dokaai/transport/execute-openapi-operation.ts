@@ -1,4 +1,5 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
+import { NodeOperationError } from 'n8n-workflow';
 
 import { buildRequestOptions, findOperationById } from '../openapi/runtime';
 import { getJsonRequestSchema } from '../openapi/schema';
@@ -44,7 +45,11 @@ export const executeOpenApiOperation = async (
 			buildRequestOptions(dokaaiOpenApiDocument, definition, values),
 		);
 	} catch (error) {
-		throw new Error(`Dokaai ${operationId} failed: ${readErrorDetails(error)}`);
+		throw new NodeOperationError(
+			context.getNode(),
+			`Dokaai ${operationId} failed: ${readErrorDetails(error)}`,
+			{ itemIndex },
+		);
 	}
 
 	return {

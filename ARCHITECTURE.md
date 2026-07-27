@@ -187,7 +187,8 @@ files from deleted modules being published.
 The build copies:
 
 - `api/index.json` to `dist/api/index.json`
-- `nodes/Dokaai/dokaai.svg` to `dist/nodes/Dokaai/dokaai.icon.svg`
+- node icon variants to `dist/nodes/Dokaai/`
+- credential icon variants to `dist/credentials/`
 
 ## Testing Strategy
 

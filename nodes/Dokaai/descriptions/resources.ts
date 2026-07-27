@@ -15,5 +15,5 @@ export const resourceOptions: INodeProperties = {
 		name: resource.name,
 		value: resource.value,
 	})),
-	default: resourceGroups[0]?.value ?? '',
+	default: 'customerpools',
 };

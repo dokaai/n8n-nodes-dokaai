@@ -3,7 +3,18 @@ const test = require('node:test');
 
 const { parseJsonParameter, readOperationValues } = require('../../nodes/Dokaai/shared/values');
 
+const fakeNode = {
+	name: 'Dokaai',
+	type: 'n8n-nodes-dokaai.dokaai',
+	typeVersion: 1,
+	position: [0, 0],
+	parameters: {},
+};
+
 const contextFor = (parameters) => ({
+	getNode() {
+		return fakeNode;
+	},
 	getNodeParameter(name, _itemIndex, defaultValue) {
 		return Object.prototype.hasOwnProperty.call(parameters, name)
 			? parameters[name]
@@ -12,9 +23,9 @@ const contextFor = (parameters) => ({
 });
 
 test('parseJsonParameter parses JSON strings and rejects invalid JSON', () => {
-	assert.deepEqual(parseJsonParameter('{"enabled":true}', 'metadata'), { enabled: true });
-	assert.equal(parseJsonParameter('', 'metadata'), undefined);
-	assert.throws(() => parseJsonParameter('{bad}', 'metadata'), /metadata must be valid JSON/);
+	assert.deepEqual(parseJsonParameter('{"enabled":true}', 'metadata', fakeNode), { enabled: true });
+	assert.equal(parseJsonParameter('', 'metadata', fakeNode), undefined);
+	assert.throws(() => parseJsonParameter('{bad}', 'metadata', fakeNode), /metadata must be valid JSON/);
 });
 
 test('readOperationValues converts primitive fixed collections to arrays', () => {

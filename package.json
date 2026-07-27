@@ -31,7 +31,7 @@
     "node": ">=22.13.0 <23"
   },
   "scripts": {
-    "build": "node scripts/clean-dist.js && tsc -p tsconfig.json && mkdir -p dist/api dist/nodes/Dokaai && cp api/index.json dist/api/index.json && cp nodes/Dokaai/dokaai.svg dist/nodes/Dokaai/dokaai.icon.svg",
+    "build": "node scripts/clean-dist.js && tsc -p tsconfig.json && node scripts/copy-build-assets.js",
     "check": "npm test && npm run build && npm pack --dry-run --cache .npm-cache",
     "generate:tests": "node scripts/generate-openapi-tests.js",
     "prepack": "npm run build",
