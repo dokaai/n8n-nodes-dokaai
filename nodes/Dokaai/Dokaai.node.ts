@@ -22,6 +22,7 @@ export class Dokaai implements INodeType {
 		defaults: {
 			name: 'Dokaai',
 		},
+		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
