@@ -10,6 +10,7 @@ const testPath = path.join(root, 'test/integration/openapi-generated.test.js');
 
 const spec = JSON.parse(fs.readFileSync(specPath, 'utf8'));
 const { groupOperationIdsByFirstTag } = require(path.join(root, 'nodes/Dokaai/openapi/operations'));
+const { rawJsonBodyFieldForOperation } = require(path.join(root, 'nodes/Dokaai/shared/operation-policy'));
 const { selectedOperationIds } = require(operationSelectionPath);
 
 const HTTP_METHODS = ['get', 'post', 'put', 'patch', 'delete', 'options', 'head'];
@@ -27,6 +28,23 @@ const CUSTOMER_ATTRIBUTE_OPERATION_IDS = new Set([
 	'addCustomersToPool',
 	'updateCustomerInPool',
 ]);
+const RAW_JSON_BODY_EXAMPLES = {
+	triggerNotificationHandler: {
+		mode: 'test',
+		enabledOnlyChannels: ['in_app'],
+		templateData: {},
+		recipients: [
+			{
+				uniqueCustomerId: 'TRIAL-USER-1003',
+				emailId: 'ayush@gmail.com',
+				phoneNumber: '+919369450531',
+				androidDeviceTokens: ['werwerwer'],
+				iosDeviceTokens: ['ewrrwewer'],
+				name: 'Ayush Srivastava',
+			},
+		],
+	},
+};
 
 const normalizeSchema = (schema) => {
 	if (!schema) {
@@ -295,7 +313,14 @@ const buildFixture = (operationId, resource) => {
 			.filter((parameter) => parameter.in === 'path' || parameter.in === 'query')
 			.map((parameter) => parameter.name),
 	]);
-	const bodyFields = collectBodyFields(bodySchema, excluded);
+	const rawJsonBodyField = rawJsonBodyFieldForOperation(operationId);
+	const generatedBodyFields = collectBodyFields(bodySchema, excluded);
+	const bodyFields = rawJsonBodyField
+		? [
+				...generatedBodyFields,
+				{ name: rawJsonBodyField, key: rawJsonBodyField, schema: { type: 'object' } },
+			]
+		: generatedBodyFields;
 	const inputData = {};
 
 	for (const parameter of parameters.filter((entry) => entry.in === 'path')) {
@@ -306,11 +331,21 @@ const buildFixture = (operationId, resource) => {
 		inputData[parameter.name] = fieldExample(parameter.name, parameter.schema);
 	}
 
-	for (const field of bodyFields) {
-		inputData[field.name] = n8nInputValue(field.name, field.schema);
-	}
+	let expectedBody;
 
-	let expectedBody = buildExpectedBody(bodyFields, inputData, bodyRoot);
+	if (rawJsonBodyField) {
+		expectedBody = RAW_JSON_BODY_EXAMPLES[operationId] || {};
+		for (const field of generatedBodyFields) {
+			inputData[field.name] = n8nInputValue(field.name, field.schema);
+		}
+		inputData[rawJsonBodyField] = JSON.stringify(expectedBody);
+	} else {
+		for (const field of bodyFields) {
+			inputData[field.name] = n8nInputValue(field.name, field.schema);
+		}
+
+		expectedBody = buildExpectedBody(bodyFields, inputData, bodyRoot);
+	}
 
 	if (CUSTOMER_ATTRIBUTE_OPERATION_IDS.has(operationId)) {
 		inputData.customerAttributes = {
@@ -454,6 +489,15 @@ test('Dokaai node generates expected fields from OpenAPI params and request bodi
 				'projectId',
 				'customerPoolId',
 			]);
+		}
+
+		if (fixture.operationId === 'triggerNotificationHandler') {
+			const modeField = fields.find((field) => field.name === 'mode');
+			const bodyJsonField = fields.find((field) => field.name === 'bodyJson');
+
+			assert.equal(modeField?.required, false);
+			assert.equal(bodyJsonField?.required, false);
+			assert.equal(bodyJsonField?.default, '');
 		}
 	}
 });

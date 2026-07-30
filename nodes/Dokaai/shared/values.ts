@@ -7,6 +7,7 @@ import {
 	excludedBodyFieldsForOperation,
 	inferBodyRoot,
 	operationBodySchema,
+	rawJsonBodyFieldForOperation,
 	supportsCustomerAttributeFields,
 } from './operation-policy';
 
@@ -156,9 +157,23 @@ export const readOperationValues = (
 	const bodySchema = operationBodySchema(operation, bodyRoot);
 	const excluded = excludedBodyFieldsForOperation(operation);
 	const node = context.getNode();
+	const rawJsonBodyField = rawJsonBodyFieldForOperation(operationId);
 
 	for (const parameter of operation.parameters ?? []) {
 		values[parameter.name] = context.getNodeParameter(parameter.name, itemIndex, undefined);
+	}
+
+	if (rawJsonBodyField !== undefined) {
+		const rawJsonBody = parseJsonParameter(
+			context.getNodeParameter(rawJsonBodyField, itemIndex, undefined),
+			rawJsonBodyField,
+			node,
+		);
+
+		if (shouldIncludeValue(rawJsonBody)) {
+			values.body = rawJsonBody;
+			return values;
+		}
 	}
 
 	for (const field of collectBodyFields(bodySchema, excluded)) {

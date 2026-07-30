@@ -50,3 +50,6 @@ export const excludedBodyFieldsForOperation = (operation: OpenApiOperation): Set
 
 export const supportsCustomerAttributeFields = (operationId: string): boolean =>
 	operationId === 'addCustomersToPool' || operationId === 'updateCustomerInPool';
+
+export const rawJsonBodyFieldForOperation = (operationId: string | undefined): string | undefined =>
+	operationId === 'triggerNotificationHandler' ? 'bodyJson' : undefined;
