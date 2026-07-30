@@ -375,20 +375,39 @@ const operationFixtures = [
     ],
     "bodyFieldNames": [
       "mode",
-      "idempotencyKey"
+      "idempotencyKey",
+      "bodyJson"
     ],
     "hasCustomerAttributeMapper": false,
     "inputData": {
       "projectId": "projectId value",
       "notificationHandlerId": "notificationHandlerId value",
       "mode": "live",
-      "idempotencyKey": "idempotencyKey-value"
+      "idempotencyKey": "idempotencyKey-value",
+      "bodyJson": "{\"mode\":\"test\",\"enabledOnlyChannels\":[\"in_app\"],\"templateData\":{},\"recipients\":[{\"uniqueCustomerId\":\"TRIAL-USER-1003\",\"emailId\":\"ayush@gmail.com\",\"phoneNumber\":\"+919369450531\",\"androidDeviceTokens\":[\"werwerwer\"],\"iosDeviceTokens\":[\"ewrrwewer\"],\"name\":\"Ayush Srivastava\"}]}"
     },
     "expectedUrl": "https://api.dokaai.com/v1/dokaai/nudge/projects/projectId%20value/notification-handlers/notificationHandlerId%20value/trigger",
     "expectedQs": {},
     "expectedBody": {
-      "mode": "live",
-      "idempotencyKey": "idempotencyKey-value"
+      "mode": "test",
+      "enabledOnlyChannels": [
+        "in_app"
+      ],
+      "templateData": {},
+      "recipients": [
+        {
+          "uniqueCustomerId": "TRIAL-USER-1003",
+          "emailId": "ayush@gmail.com",
+          "phoneNumber": "+919369450531",
+          "androidDeviceTokens": [
+            "werwerwer"
+          ],
+          "iosDeviceTokens": [
+            "ewrrwewer"
+          ],
+          "name": "Ayush Srivastava"
+        }
+      ]
     },
     "expectedAuthHeaders": {
       "x-client-key": "x-client-key-value",
@@ -605,6 +624,15 @@ test('Dokaai node generates expected fields from OpenAPI params and request bodi
 				'projectId',
 				'customerPoolId',
 			]);
+		}
+
+		if (fixture.operationId === 'triggerNotificationHandler') {
+			const modeField = fields.find((field) => field.name === 'mode');
+			const bodyJsonField = fields.find((field) => field.name === 'bodyJson');
+
+			assert.equal(modeField?.required, false);
+			assert.equal(bodyJsonField?.required, false);
+			assert.equal(bodyJsonField?.default, '');
 		}
 	}
 });
