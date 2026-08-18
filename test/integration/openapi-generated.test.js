@@ -74,8 +74,7 @@ const operationFixtures = [
       "uniqueCustomerId",
       "emailId",
       "phoneNumber",
-      "iosDeviceTokens",
-      "androidDeviceTokens",
+      "pushContactPoints",
       "name",
       "pinCode",
       "countryIsoCode",
@@ -88,23 +87,12 @@ const operationFixtures = [
       "uniqueCustomerId": "uniqueCustomerId-value",
       "emailId": "emailId-value",
       "phoneNumber": "phoneNumber-value",
-      "iosDeviceTokens": {
-        "iosDeviceTokens": [
+      "pushContactPoints": {
+        "pushContactPoints": [
           {
-            "value": "iosDeviceTokens-1"
-          },
-          {
-            "value": "iosDeviceTokens-2"
-          }
-        ]
-      },
-      "androidDeviceTokens": {
-        "androidDeviceTokens": [
-          {
-            "value": "androidDeviceTokens-1"
-          },
-          {
-            "value": "androidDeviceTokens-2"
+            "provider": "firebaseCloudMessaging",
+            "token": "token-value",
+            "platform": "ios"
           }
         ]
       },
@@ -130,13 +118,12 @@ const operationFixtures = [
         "uniqueCustomerId": "uniqueCustomerId-value",
         "emailId": "emailId-value",
         "phoneNumber": "phoneNumber-value",
-        "iosDeviceTokens": [
-          "iosDeviceTokens-1",
-          "iosDeviceTokens-2"
-        ],
-        "androidDeviceTokens": [
-          "androidDeviceTokens-1",
-          "androidDeviceTokens-2"
+        "pushContactPoints": [
+          {
+            "provider": "firebaseCloudMessaging",
+            "token": "token-value",
+            "platform": "ios"
+          }
         ],
         "name": "name-value",
         "pinCode": "pinCode-value",
@@ -162,8 +149,7 @@ const operationFixtures = [
     "bodyFieldNames": [
       "name",
       "countryIsoCode",
-      "iosDeviceTokens",
-      "androidDeviceTokens",
+      "pushContactPoints",
       "emailId",
       "phoneNumber",
       "pinCode",
@@ -176,23 +162,12 @@ const operationFixtures = [
       "projectId": "projectId value",
       "name": "name-value",
       "countryIsoCode": "countryIsoCode-value",
-      "iosDeviceTokens": {
-        "iosDeviceTokens": [
+      "pushContactPoints": {
+        "pushContactPoints": [
           {
-            "value": "iosDeviceTokens-1"
-          },
-          {
-            "value": "iosDeviceTokens-2"
-          }
-        ]
-      },
-      "androidDeviceTokens": {
-        "androidDeviceTokens": [
-          {
-            "value": "androidDeviceTokens-1"
-          },
-          {
-            "value": "androidDeviceTokens-2"
+            "provider": "firebaseCloudMessaging",
+            "token": "token-value",
+            "platform": "ios"
           }
         ]
       },
@@ -216,13 +191,12 @@ const operationFixtures = [
     "expectedBody": {
       "name": "name-value",
       "countryIsoCode": "countryIsoCode-value",
-      "iosDeviceTokens": [
-        "iosDeviceTokens-1",
-        "iosDeviceTokens-2"
-      ],
-      "androidDeviceTokens": [
-        "androidDeviceTokens-1",
-        "androidDeviceTokens-2"
+      "pushContactPoints": [
+        {
+          "provider": "firebaseCloudMessaging",
+          "token": "token-value",
+          "platform": "ios"
+        }
       ],
       "emailId": "emailId-value",
       "phoneNumber": "phoneNumber-value",
