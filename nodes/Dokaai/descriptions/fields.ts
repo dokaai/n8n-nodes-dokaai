@@ -6,6 +6,10 @@ import { buildNodeProperty, buildPropertiesFromObjectSchema } from '../openapi/s
 import { dokaaiOpenApiDocument } from '../shared/document';
 import { sortPriorityFieldsFirst } from '../shared/fields';
 import {
+	legacyDeviceTokenSchema,
+	supportsLegacyDeviceTokenFields,
+} from '../shared/legacy-device-token-fields';
+import {
 	excludedBodyFieldsForOperation,
 	inferBodyRoot,
 	operationBodySchema,
@@ -39,11 +43,14 @@ const buildOperationFields = (resource: (typeof resourceGroups)[number]): INodeP
 			displayOptions,
 			exclude: excludedBodyFieldsForOperation(operation),
 		});
+		const legacyDeviceTokenFields = supportsLegacyDeviceTokenFields(operationId)
+			? buildPropertiesFromObjectSchema(legacyDeviceTokenSchema, { displayOptions })
+			: [];
 		const customerAttributeFields = supportsCustomerAttributeFields(operationId)
 			? [buildCustomerAttributeResourceMapper(displayOptions)]
 			: [];
 
-		return [...parameters, ...bodyFields, ...customerAttributeFields];
+		return [...parameters, ...bodyFields, ...legacyDeviceTokenFields, ...customerAttributeFields];
 	});
 
 export const operationFields: INodeProperties[] = resourceGroups.flatMap(buildOperationFields);

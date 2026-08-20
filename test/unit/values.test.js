@@ -113,6 +113,12 @@ test('readOperationValues wraps inferred body roots and excludes params/audit fi
 			uniqueCustomerId: 'customer-1',
 			emailId: 'customer@example.com',
 			createdDate: '2026-07-02T00:00:00.000Z',
+			iosDeviceTokens: {
+				iosDeviceTokens: [{ value: 'ios-token-1' }],
+			},
+			androidDeviceTokens: {
+				androidDeviceTokens: [{ value: 'android-token-1' }, { value: 'android-token-2' }],
+			},
 			customerAttributes: {
 				mappingMode: 'defineBelow',
 				value: {
@@ -133,9 +139,51 @@ test('readOperationValues wraps inferred body roots and excludes params/audit fi
 			customerData: {
 				uniqueCustomerId: 'customer-1',
 				emailId: 'customer@example.com',
+				iosDeviceTokens: ['ios-token-1'],
+				androidDeviceTokens: ['android-token-1', 'android-token-2'],
 				is_vip: true,
 				first_zap: 'yes',
 			},
+		},
+	});
+});
+
+test('readOperationValues ignores legacy device token arrays for unrelated operations', () => {
+	const operation = {
+		operationId: 'triggerNotificationHandler',
+		parameters: [],
+		requestBody: {
+			content: {
+				'application/json': {
+					schema: {
+						type: 'object',
+						properties: {
+							event: { type: 'string' },
+						},
+					},
+				},
+			},
+		},
+	};
+
+	const values = readOperationValues(
+		contextFor({
+			event: 'purchase',
+			iosDeviceTokens: {
+				iosDeviceTokens: [{ value: 'ios-token-1' }],
+			},
+			androidDeviceTokens: {
+				androidDeviceTokens: [{ value: 'android-token-1' }],
+			},
+		}),
+		operation,
+		undefined,
+		0,
+	);
+
+	assert.deepEqual(values, {
+		body: {
+			event: 'purchase',
 		},
 	});
 });

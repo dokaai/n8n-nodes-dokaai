@@ -9,6 +9,10 @@ import {
 	operationBodySchema,
 	supportsCustomerAttributeFields,
 } from './operation-policy';
+import {
+	legacyDeviceTokenSchema,
+	supportsLegacyDeviceTokenFields,
+} from './legacy-device-token-fields';
 
 export const parseJsonParameter = (value: unknown, fieldName: string, node: INode): unknown => {
 	if (value === undefined || value === null || value === '') {
@@ -173,6 +177,20 @@ export const readOperationValues = (
 
 		if (shouldIncludeValue(value)) {
 			setNestedValue(body, field.name.split('.'), value);
+		}
+	}
+
+	if (operationId !== undefined && supportsLegacyDeviceTokenFields(operationId)) {
+		for (const field of collectBodyFields(legacyDeviceTokenSchema, new Set())) {
+			const rawValue = context.getNodeParameter(field.name, itemIndex, undefined);
+			const value = readFixedCollectionValue(
+				parseJsonParameter(rawValue, field.name, node),
+				field.name,
+			);
+
+			if (shouldIncludeValue(value)) {
+				setNestedValue(body, field.name.split('.'), value);
+			}
 		}
 	}
 
