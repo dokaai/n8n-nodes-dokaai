@@ -135,6 +135,14 @@ npm run check
 typechecks, builds the package, and verifies the npm package contents with
 `npm pack --dry-run`.
 
+After publishing a version to npm, scan the exact published package version:
+
+```bash
+npx @n8n/scan-community-package@beta n8n-nodes-dokaai@0.1.13
+```
+
+Replace `0.1.13` with the version you just released.
+
 For contributor workflow details, see
 [CONTRIBUTING.md](https://github.com/dokaai/n8n-nodes-dokaai/blob/main/CONTRIBUTING.md).
 
