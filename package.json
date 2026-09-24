@@ -59,6 +59,9 @@
   "peerDependencies": {
     "n8n-workflow": "*"
   },
+  "dependencies": {
+    "dokaai-openapi-spec": "^0.1.15"
+  },
   "devDependencies": {
     "n8n-workflow": "^2.16.0",
     "typescript": "^5.9.3"
