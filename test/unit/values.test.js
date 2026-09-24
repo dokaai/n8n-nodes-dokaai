@@ -75,6 +75,45 @@ test('readOperationValues converts primitive fixed collections to arrays', () =>
 	});
 });
 
+test('readOperationValues omits untouched optional fixed collections', () => {
+	const operation = {
+		operationId: 'addCustomersToPool',
+		requestBody: {
+			content: {
+				'application/json': {
+					schema: {
+						type: 'object',
+						required: ['customerData'],
+						properties: {
+							customerData: {
+								type: 'object',
+								properties: {
+									uniqueCustomerId: { type: 'string' },
+									pushContactPoints: { type: 'array', items: { type: 'object' } },
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	};
+
+	const values = readOperationValues(
+		contextFor({
+			uniqueCustomerId: 'customer-1',
+			pushContactPoints: {},
+		}),
+		operation,
+		undefined,
+		0,
+	);
+
+	assert.deepEqual(values, {
+		body: { customerData: { uniqueCustomerId: 'customer-1' } },
+	});
+});
+
 test('readOperationValues wraps inferred body roots and excludes params/audit fields', () => {
 	const operation = {
 		operationId: 'addCustomersToPool',
