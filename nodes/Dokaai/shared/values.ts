@@ -7,6 +7,7 @@ import {
 	excludedBodyFieldsForOperation,
 	inferBodyRoot,
 	operationBodySchema,
+	rawJsonBodyFieldForOperation,
 	supportsCustomerAttributeFields,
 } from './operation-policy';
 
@@ -127,6 +128,10 @@ const readFixedCollectionValue = (rawValue: unknown, fieldName: string): unknown
 	const repeatedValues = rawValue[fieldName];
 
 	if (Array.isArray(repeatedValues)) {
+		if (repeatedValues.length === 0) {
+			return undefined;
+		}
+
 		return repeatedValues.map((item) => {
 			if (
 				isRecord(item) &&
@@ -140,7 +145,9 @@ const readFixedCollectionValue = (rawValue: unknown, fieldName: string): unknown
 		});
 	}
 
-	return rawValue;
+	// An untouched n8n fixed collection is represented as `{}`. It must not
+	// become an invalid object value for an optional array field.
+	return undefined;
 };
 
 export const readOperationValues = (
@@ -156,9 +163,23 @@ export const readOperationValues = (
 	const bodySchema = operationBodySchema(operation, bodyRoot);
 	const excluded = excludedBodyFieldsForOperation(operation);
 	const node = context.getNode();
+	const rawJsonBodyField = rawJsonBodyFieldForOperation(operationId);
 
 	for (const parameter of operation.parameters ?? []) {
 		values[parameter.name] = context.getNodeParameter(parameter.name, itemIndex, undefined);
+	}
+
+	if (rawJsonBodyField !== undefined) {
+		const rawJsonBody = parseJsonParameter(
+			context.getNodeParameter(rawJsonBodyField, itemIndex, undefined),
+			rawJsonBodyField,
+			node,
+		);
+
+		if (shouldIncludeValue(rawJsonBody)) {
+			values.body = rawJsonBody;
+			return values;
+		}
 	}
 
 	for (const field of collectBodyFields(bodySchema, excluded)) {
