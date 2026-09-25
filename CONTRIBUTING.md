@@ -21,7 +21,7 @@ npm test
 
 ## Naming Conventions
 
-- OpenAPI `operationId`s stay camelCase and come from `api/index.json`.
+- OpenAPI `operationId`s stay camelCase and come from `dokaai-openapi-spec`.
 - n8n resource labels come from the first OpenAPI tag on each selected operation.
 - Local module and folder filenames use kebab-case.
 - TypeScript classes and exported types use PascalCase or camelCase as appropriate.
@@ -35,7 +35,7 @@ npm test
 
 ## Adding An Operation
 
-1. Add or update the endpoint in `api/index.json`.
+1. Add or update the endpoint in `dokaai-openapi-spec`.
 2. Add the `operationId` to `nodes/Dokaai/operation-selection.ts`.
 3. Confirm the operation's first OpenAPI tag is the desired n8n resource label.
 4. Run `npm run generate:tests`.
@@ -62,7 +62,7 @@ auth headers, and response handling.
 
 ## Contract Rules
 
-- Preserve HTTP methods, paths, query parameters, and request body shapes from `api/index.json`.
+- Preserve HTTP methods, paths, query parameters, and request body shapes from `dokaai-openapi-spec`.
 - Do not duplicate Dokaai routes in feature code.
 - Do not hard-code request body wrappers that are not present in OpenAPI.
 - If an operation has a single required object body property, the adapter may use it as the request body root.

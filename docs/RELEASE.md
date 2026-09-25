@@ -14,8 +14,7 @@ The npm package follows n8n community node conventions:
 - npm package contents are limited by `package.json > files`
 
 Only runtime package files are published. Development files such as `test/`,
-`scripts/`, raw TypeScript source, and the root `api/` folder stay in the
-repository.
+`scripts/`, and raw TypeScript source stay in the repository.
 
 ## Local Readiness Check
 
@@ -42,7 +41,7 @@ checks npm package contents with `npm pack --dry-run`.
 
 ## Change And Release Workflow
 
-Use this flow when changing the node, updating `api/index.json`, or exposing
+Use this flow when changing the node, updating `dokaai-openapi-spec`, or exposing
 new Dokaai API operations.
 
 Start from the latest `main`:
@@ -57,7 +56,7 @@ npm ci
 Make the source changes:
 
 ```bash
-# edit api/index.json
+# update dokaai-openapi-spec
 # edit nodes/Dokaai/operation-selection.ts if you need to expose new operation IDs
 # edit loaders, descriptions, or shared helpers only when the generated behavior needs support
 ```

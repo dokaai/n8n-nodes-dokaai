@@ -4,7 +4,6 @@ const { dirname, join } = require('node:path');
 const rootDir = join(__dirname, '..');
 
 const assets = [
-	['api/index.json', 'dist/api/index.json'],
 	['nodes/Dokaai/dokaai.svg', 'dist/nodes/Dokaai/dokaai.svg'],
 ];
 
