@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "author": {
-    "name": "DokaAI",
+    "name": "DokaaI",
     "email": "atuljoshi@dokaai.com",
     "url": "https://dokaai.com"
   },
@@ -28,7 +28,7 @@
     "dokaai"
   ],
   "engines": {
-    "node": ">=22.13.0 <23"
+    "node": ">=24.21.0 <25"
   },
   "scripts": {
     "build": "node scripts/clean-dist.js && tsc -p tsconfig.json && node scripts/copy-build-assets.js",
@@ -60,7 +60,7 @@
     "n8n-workflow": "*"
   },
   "dependencies": {
-    "dokaai-openapi-spec": "^0.1.15"
+    "dokaai-openapi-spec": "0.1.16"
   },
   "devDependencies": {
     "n8n-workflow": "^2.16.0",
