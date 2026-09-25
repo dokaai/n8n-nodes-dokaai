@@ -128,6 +128,10 @@ const readFixedCollectionValue = (rawValue: unknown, fieldName: string): unknown
 	const repeatedValues = rawValue[fieldName];
 
 	if (Array.isArray(repeatedValues)) {
+		if (repeatedValues.length === 0) {
+			return undefined;
+		}
+
 		return repeatedValues.map((item) => {
 			if (
 				isRecord(item) &&
@@ -141,7 +145,9 @@ const readFixedCollectionValue = (rawValue: unknown, fieldName: string): unknown
 		});
 	}
 
-	return rawValue;
+	// An untouched n8n fixed collection is represented as `{}`. It must not
+	// become an invalid object value for an optional array field.
+	return undefined;
 };
 
 export const readOperationValues = (

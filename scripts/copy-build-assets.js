@@ -4,7 +4,8 @@ const { dirname, join } = require('node:path');
 const rootDir = join(__dirname, '..');
 
 const assets = [
-	['nodes/Dokaai/dokaai.svg', 'dist/nodes/Dokaai/dokaai.svg'],
+	['nodes/Dokaai/dokaai.light.svg', 'dist/nodes/Dokaai/dokaai.light.svg'],
+	['nodes/Dokaai/dokaai.dark.svg', 'dist/nodes/Dokaai/dokaai.dark.svg'],
 ];
 
 for (const [source, target] of assets) {
