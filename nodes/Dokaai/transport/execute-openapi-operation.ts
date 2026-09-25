@@ -1,32 +1,13 @@
-import type { IDataObject, IExecuteFunctions, INodeExecutionData } from 'n8n-workflow';
-import { NodeOperationError } from 'n8n-workflow';
+import type { IDataObject, IExecuteFunctions, IN8nHttpFullResponse, INodeExecutionData, JsonObject } from 'n8n-workflow';
+import { NodeApiError } from 'n8n-workflow';
 
 import { buildRequestOptions, findOperationById } from '../openapi/runtime';
 import { getJsonRequestSchema } from '../openapi/schema';
 import { dokaaiOpenApiDocument } from '../shared/document';
 import { readOperationValues } from '../shared/values';
 
-const readErrorDetails = (error: unknown): string => {
-	if (typeof error === 'object' && error !== null) {
-		const record = error as IDataObject;
-		const response = record.response as IDataObject | undefined;
-		const data = response?.data ?? record.data ?? record.error;
-
-		if (typeof data === 'string') {
-			return data;
-		}
-
-		if (typeof data === 'object' && data !== null) {
-			return JSON.stringify(data);
-		}
-
-		if (typeof record.message === 'string') {
-			return record.message;
-		}
-	}
-
-	return error instanceof Error ? error.message : 'Request failed';
-};
+const isHttpResponse = (response: IDataObject | IN8nHttpFullResponse): response is IN8nHttpFullResponse =>
+	'statusCode' in response && 'body' in response;
 
 export const executeOpenApiOperation = async (
 	context: IExecuteFunctions,
@@ -36,24 +17,44 @@ export const executeOpenApiOperation = async (
 	const definition = findOperationById(dokaaiOpenApiDocument, operationId);
 	const bodySchema = getJsonRequestSchema(definition.operation.requestBody);
 	const values = readOperationValues(context, definition.operation, bodySchema, itemIndex);
-	let response: IDataObject;
-
+	let rawResponse: IDataObject | IN8nHttpFullResponse;
 	try {
-		response = await context.helpers.httpRequestWithAuthentication.call(
+		rawResponse = await context.helpers.httpRequestWithAuthentication.call(
 			context,
 			'dokaaiApi',
-			buildRequestOptions(dokaaiOpenApiDocument, definition, values),
+			{
+				...buildRequestOptions(dokaaiOpenApiDocument, definition, values),
+				ignoreHttpStatusErrors: true,
+				returnFullResponse: true,
+			},
 		);
 	} catch (error) {
-		throw new NodeOperationError(
+		throw new NodeApiError(
 			context.getNode(),
-			`Dokaai ${operationId} failed: ${readErrorDetails(error)}`,
-			{ itemIndex },
+			error as JsonObject,
+			{
+				message: `Dokaai ${operationId} failed`,
+				itemIndex,
+			},
 		);
 	}
 
+	if (isHttpResponse(rawResponse)) {
+		if (rawResponse.statusCode >= 400) {
+			throw new NodeApiError(context.getNode(), {
+				response: { data: rawResponse.body },
+				httpCode: String(rawResponse.statusCode),
+			} as unknown as JsonObject, {
+				message: `Dokaai ${operationId} failed`,
+				itemIndex,
+			});
+		}
+
+		rawResponse = rawResponse.body as IDataObject;
+	}
+
 	return {
-		json: response,
+		json: rawResponse,
 		pairedItem: {
 			item: itemIndex,
 		},

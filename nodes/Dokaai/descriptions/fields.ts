@@ -9,6 +9,7 @@ import {
 	excludedBodyFieldsForOperation,
 	inferBodyRoot,
 	operationBodySchema,
+	rawJsonBodyFieldForOperation,
 	supportsCustomerAttributeFields,
 } from '../shared/operation-policy';
 import { operationDisplayOptions } from './display-options';
@@ -17,6 +18,29 @@ import { resourceGroups } from './resources';
 
 const parameterDisplayName = (parameterName: string): string | undefined =>
 	parameterName === 'filterOutTALId' ? 'Filter Out Target Audience List' : undefined;
+
+const buildRawJsonBodyField = (
+	operationId: string | undefined,
+	displayOptions: INodeProperties['displayOptions'],
+): INodeProperties[] => {
+	const fieldName = rawJsonBodyFieldForOperation(operationId);
+
+	if (fieldName === undefined) {
+		return [];
+	}
+
+	return [
+		{
+			displayName: 'Body JSON',
+			name: fieldName,
+			type: 'json',
+			default: '',
+			required: false,
+			description: 'Optional JSON request body sent to Dokaai for this operation.',
+			displayOptions,
+		},
+	];
+};
 
 const buildOperationFields = (resource: (typeof resourceGroups)[number]): INodeProperties[] =>
 	resource.operationIds.flatMap((operationId) => {
@@ -35,15 +59,19 @@ const buildOperationFields = (resource: (typeof resourceGroups)[number]): INodeP
 			),
 		);
 		const bodyRoot = inferBodyRoot(operation);
+		const rawJsonBodyFields = buildRawJsonBodyField(operationId, displayOptions);
 		const bodyFields = buildPropertiesFromObjectSchema(operationBodySchema(operation, bodyRoot), {
 			displayOptions,
 			exclude: excludedBodyFieldsForOperation(operation),
-		});
+		}).map((field) => ({
+			...field,
+			required: rawJsonBodyFields.length > 0 ? false : field.required,
+		}));
 		const customerAttributeFields = supportsCustomerAttributeFields(operationId)
 			? [buildCustomerAttributeResourceMapper(displayOptions)]
 			: [];
 
-		return [...parameters, ...bodyFields, ...customerAttributeFields];
+		return [...parameters, ...bodyFields, ...customerAttributeFields, ...rawJsonBodyFields];
 	});
 
 export const operationFields: INodeProperties[] = resourceGroups.flatMap(buildOperationFields);
