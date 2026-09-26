@@ -8739,7 +8739,620 @@
                                   "status": {
                                     "type": "string"
                                   },
-                                  "executionSummary": {},
+                                  "executionSummary": {
+                                    "anyOf": [
+                                      {
+                                        "type": "object",
+                                        "required": [
+                                          "status",
+                                          "startedAt",
+                                          "stages"
+                                        ],
+                                        "properties": {
+                                          "status": {
+                                            "type": "string",
+                                            "enum": [
+                                              "success",
+                                              "partial",
+                                              "failed"
+                                            ]
+                                          },
+                                          "startedAt": {
+                                            "type": "string"
+                                          },
+                                          "stages": {
+                                            "type": "object",
+                                            "properties": {
+                                              "trigger": {
+                                                "type": "object",
+                                                "allOf": [
+                                                  {
+                                                    "type": "object",
+                                                    "required": [
+                                                      "status"
+                                                    ],
+                                                    "properties": {
+                                                      "status": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "success",
+                                                          "partial",
+                                                          "failed"
+                                                        ]
+                                                      },
+                                                      "startedAt": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "string"
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "error": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "object",
+                                                            "required": [
+                                                              "stageName",
+                                                              "errorClass",
+                                                              "errorCode",
+                                                              "errorMessage"
+                                                            ],
+                                                            "properties": {
+                                                              "stageName": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "trigger",
+                                                                  "recipient_preference_and_routing",
+                                                                  "template_mapping",
+                                                                  "delivery"
+                                                                ]
+                                                              },
+                                                              "errorClass": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "validation",
+                                                                  "client",
+                                                                  "system"
+                                                                ]
+                                                              },
+                                                              "errorCode": {
+                                                                "type": "string"
+                                                              },
+                                                              "errorMessage": {
+                                                                "type": "string"
+                                                              }
+                                                            }
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "mode": {
+                                                        "type": "string"
+                                                      },
+                                                      "hasOverrides": {
+                                                        "type": "boolean"
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "recipient_preference_and_routing": {
+                                                "type": "object",
+                                                "allOf": [
+                                                  {
+                                                    "type": "object",
+                                                    "required": [
+                                                      "status"
+                                                    ],
+                                                    "properties": {
+                                                      "status": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "success",
+                                                          "partial",
+                                                          "failed"
+                                                        ]
+                                                      },
+                                                      "startedAt": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "string"
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "error": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "object",
+                                                            "required": [
+                                                              "stageName",
+                                                              "errorClass",
+                                                              "errorCode",
+                                                              "errorMessage"
+                                                            ],
+                                                            "properties": {
+                                                              "stageName": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "trigger",
+                                                                  "recipient_preference_and_routing",
+                                                                  "template_mapping",
+                                                                  "delivery"
+                                                                ]
+                                                              },
+                                                              "errorClass": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "validation",
+                                                                  "client",
+                                                                  "system"
+                                                                ]
+                                                              },
+                                                              "errorCode": {
+                                                                "type": "string"
+                                                              },
+                                                              "errorMessage": {
+                                                                "type": "string"
+                                                              }
+                                                            }
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "attemptsMade": {
+                                                        "minimum": 0,
+                                                        "type": "integer"
+                                                      },
+                                                      "maxAttempts": {
+                                                        "minimum": 0,
+                                                        "type": "integer"
+                                                      },
+                                                      "recipient_resolution": {
+                                                        "type": "object",
+                                                        "required": [
+                                                          "count",
+                                                          "droppedCount",
+                                                          "dropReasons",
+                                                          "channelsToEvaluate",
+                                                          "bypassedChannels",
+                                                          "droppedChannels"
+                                                        ],
+                                                        "properties": {
+                                                          "count": {
+                                                            "minimum": 0,
+                                                            "type": "integer"
+                                                          },
+                                                          "droppedCount": {
+                                                            "minimum": 0,
+                                                            "type": "integer"
+                                                          },
+                                                          "dropReasons": {
+                                                            "type": "object",
+                                                            "patternProperties": {
+                                                              "^(.*)$": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              }
+                                                            }
+                                                          },
+                                                          "channelsToEvaluate": {
+                                                            "type": "array",
+                                                            "items": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "bypassedChannels": {
+                                                            "type": "array",
+                                                            "items": {
+                                                              "type": "string"
+                                                            }
+                                                          },
+                                                          "droppedChannels": {
+                                                            "type": "array",
+                                                            "items": {
+                                                              "type": "string"
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      "channel_routing": {
+                                                        "type": "object",
+                                                        "required": [
+                                                          "noChannelRecipients",
+                                                          "uniqueRecipientRouted",
+                                                          "channels"
+                                                        ],
+                                                        "properties": {
+                                                          "noChannelRecipients": {
+                                                            "minimum": 0,
+                                                            "type": "integer"
+                                                          },
+                                                          "uniqueRecipientRouted": {
+                                                            "minimum": 0,
+                                                            "type": "integer"
+                                                          },
+                                                          "channels": {
+                                                            "type": "object",
+                                                            "patternProperties": {
+                                                              "^(.*)$": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      "timezone_policy": {
+                                                        "type": "object",
+                                                        "required": [
+                                                          "timezoneResolution",
+                                                          "channels"
+                                                        ],
+                                                        "properties": {
+                                                          "timezoneResolution": {
+                                                            "type": "object",
+                                                            "required": [
+                                                              "recipientTimezoneRouteCount",
+                                                              "policyTimezoneFallbackRouteCount",
+                                                              "utcFallbackRouteCount"
+                                                            ],
+                                                            "properties": {
+                                                              "recipientTimezoneRouteCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "policyTimezoneFallbackRouteCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "utcFallbackRouteCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              }
+                                                            }
+                                                          },
+                                                          "channels": {
+                                                            "type": "object",
+                                                            "patternProperties": {
+                                                              "^(.*)$": {
+                                                                "type": "object",
+                                                                "required": [
+                                                                  "delayedRouteCount",
+                                                                  "droppedRouteCount",
+                                                                  "delayedGroupCount",
+                                                                  "savedDelayedGroupCount",
+                                                                  "delayReasons",
+                                                                  "dropReasons"
+                                                                ],
+                                                                "properties": {
+                                                                  "evaluatedRouteCount": {
+                                                                    "minimum": 0,
+                                                                    "type": "integer"
+                                                                  },
+                                                                  "sendNowRouteCount": {
+                                                                    "minimum": 0,
+                                                                    "type": "integer"
+                                                                  },
+                                                                  "delayedRouteCount": {
+                                                                    "minimum": 0,
+                                                                    "type": "integer"
+                                                                  },
+                                                                  "droppedRouteCount": {
+                                                                    "minimum": 0,
+                                                                    "type": "integer"
+                                                                  },
+                                                                  "delayedGroupCount": {
+                                                                    "minimum": 0,
+                                                                    "type": "integer"
+                                                                  },
+                                                                  "savedDelayedGroupCount": {
+                                                                    "minimum": 0,
+                                                                    "type": "integer"
+                                                                  },
+                                                                  "delayReasons": {
+                                                                    "type": "object",
+                                                                    "patternProperties": {
+                                                                      "^(.*)$": {
+                                                                        "minimum": 0,
+                                                                        "type": "integer"
+                                                                      }
+                                                                    }
+                                                                  },
+                                                                  "dropReasons": {
+                                                                    "type": "object",
+                                                                    "patternProperties": {
+                                                                      "^(.*)$": {
+                                                                        "minimum": 0,
+                                                                        "type": "integer"
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "template_mapping": {
+                                                "type": "object",
+                                                "allOf": [
+                                                  {
+                                                    "type": "object",
+                                                    "required": [
+                                                      "status"
+                                                    ],
+                                                    "properties": {
+                                                      "status": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "success",
+                                                          "partial",
+                                                          "failed"
+                                                        ]
+                                                      },
+                                                      "startedAt": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "string"
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "error": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "object",
+                                                            "required": [
+                                                              "stageName",
+                                                              "errorClass",
+                                                              "errorCode",
+                                                              "errorMessage"
+                                                            ],
+                                                            "properties": {
+                                                              "stageName": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "trigger",
+                                                                  "recipient_preference_and_routing",
+                                                                  "template_mapping",
+                                                                  "delivery"
+                                                                ]
+                                                              },
+                                                              "errorClass": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "validation",
+                                                                  "client",
+                                                                  "system"
+                                                                ]
+                                                              },
+                                                              "errorCode": {
+                                                                "type": "string"
+                                                              },
+                                                              "errorMessage": {
+                                                                "type": "string"
+                                                              }
+                                                            }
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "channels": {
+                                                        "type": "object",
+                                                        "patternProperties": {
+                                                          "^(.*)$": {
+                                                            "type": "object",
+                                                            "required": [
+                                                              "inputCount",
+                                                              "mappedCount",
+                                                              "droppedCount"
+                                                            ],
+                                                            "properties": {
+                                                              "inputCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "mappedCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "droppedCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "dropReasons": {
+                                                                "type": "object",
+                                                                "patternProperties": {
+                                                                  "^(.*)$": {
+                                                                    "minimum": 0,
+                                                                    "type": "integer"
+                                                                  }
+                                                                }
+                                                              },
+                                                              "deliveryRecipientCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "delivery": {
+                                                "type": "object",
+                                                "allOf": [
+                                                  {
+                                                    "type": "object",
+                                                    "required": [
+                                                      "status"
+                                                    ],
+                                                    "properties": {
+                                                      "status": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                          "success",
+                                                          "partial",
+                                                          "failed"
+                                                        ]
+                                                      },
+                                                      "startedAt": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "string"
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      },
+                                                      "error": {
+                                                        "anyOf": [
+                                                          {
+                                                            "type": "object",
+                                                            "required": [
+                                                              "stageName",
+                                                              "errorClass",
+                                                              "errorCode",
+                                                              "errorMessage"
+                                                            ],
+                                                            "properties": {
+                                                              "stageName": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "trigger",
+                                                                  "recipient_preference_and_routing",
+                                                                  "template_mapping",
+                                                                  "delivery"
+                                                                ]
+                                                              },
+                                                              "errorClass": {
+                                                                "type": "string",
+                                                                "enum": [
+                                                                  "validation",
+                                                                  "client",
+                                                                  "system"
+                                                                ]
+                                                              },
+                                                              "errorCode": {
+                                                                "type": "string"
+                                                              },
+                                                              "errorMessage": {
+                                                                "type": "string"
+                                                              }
+                                                            }
+                                                          },
+                                                          {
+                                                            "type": "null"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "channels": {
+                                                        "type": "object",
+                                                        "patternProperties": {
+                                                          "^(.*)$": {
+                                                            "type": "object",
+                                                            "required": [
+                                                              "inputCount"
+                                                            ],
+                                                            "properties": {
+                                                              "inputCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "deliveredCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "skippedCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "failedCount": {
+                                                                "minimum": 0,
+                                                                "type": "integer"
+                                                              },
+                                                              "error": {
+                                                                "type": "object",
+                                                                "required": [
+                                                                  "errorClass",
+                                                                  "errorCode",
+                                                                  "errorMessage"
+                                                                ],
+                                                                "properties": {
+                                                                  "errorClass": {
+                                                                    "type": "string",
+                                                                    "enum": [
+                                                                      "validation",
+                                                                      "client",
+                                                                      "system"
+                                                                    ]
+                                                                  },
+                                                                  "errorCode": {
+                                                                    "type": "string"
+                                                                  },
+                                                                  "errorMessage": {
+                                                                    "type": "string"
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "null"
+                                      }
+                                    ]
+                                  },
                                   "lastErrorClass": {
                                     "anyOf": [
                                       {
@@ -10034,7 +10647,620 @@
                                 "status": {
                                   "type": "string"
                                 },
-                                "executionSummary": {},
+                                "executionSummary": {
+                                  "anyOf": [
+                                    {
+                                      "type": "object",
+                                      "required": [
+                                        "status",
+                                        "startedAt",
+                                        "stages"
+                                      ],
+                                      "properties": {
+                                        "status": {
+                                          "type": "string",
+                                          "enum": [
+                                            "success",
+                                            "partial",
+                                            "failed"
+                                          ]
+                                        },
+                                        "startedAt": {
+                                          "type": "string"
+                                        },
+                                        "stages": {
+                                          "type": "object",
+                                          "properties": {
+                                            "trigger": {
+                                              "type": "object",
+                                              "allOf": [
+                                                {
+                                                  "type": "object",
+                                                  "required": [
+                                                    "status"
+                                                  ],
+                                                  "properties": {
+                                                    "status": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "success",
+                                                        "partial",
+                                                        "failed"
+                                                      ]
+                                                    },
+                                                    "startedAt": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "string"
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "error": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "object",
+                                                          "required": [
+                                                            "stageName",
+                                                            "errorClass",
+                                                            "errorCode",
+                                                            "errorMessage"
+                                                          ],
+                                                          "properties": {
+                                                            "stageName": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "trigger",
+                                                                "recipient_preference_and_routing",
+                                                                "template_mapping",
+                                                                "delivery"
+                                                              ]
+                                                            },
+                                                            "errorClass": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "validation",
+                                                                "client",
+                                                                "system"
+                                                              ]
+                                                            },
+                                                            "errorCode": {
+                                                              "type": "string"
+                                                            },
+                                                            "errorMessage": {
+                                                              "type": "string"
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "mode": {
+                                                      "type": "string"
+                                                    },
+                                                    "hasOverrides": {
+                                                      "type": "boolean"
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "recipient_preference_and_routing": {
+                                              "type": "object",
+                                              "allOf": [
+                                                {
+                                                  "type": "object",
+                                                  "required": [
+                                                    "status"
+                                                  ],
+                                                  "properties": {
+                                                    "status": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "success",
+                                                        "partial",
+                                                        "failed"
+                                                      ]
+                                                    },
+                                                    "startedAt": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "string"
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "error": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "object",
+                                                          "required": [
+                                                            "stageName",
+                                                            "errorClass",
+                                                            "errorCode",
+                                                            "errorMessage"
+                                                          ],
+                                                          "properties": {
+                                                            "stageName": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "trigger",
+                                                                "recipient_preference_and_routing",
+                                                                "template_mapping",
+                                                                "delivery"
+                                                              ]
+                                                            },
+                                                            "errorClass": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "validation",
+                                                                "client",
+                                                                "system"
+                                                              ]
+                                                            },
+                                                            "errorCode": {
+                                                              "type": "string"
+                                                            },
+                                                            "errorMessage": {
+                                                              "type": "string"
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "attemptsMade": {
+                                                      "minimum": 0,
+                                                      "type": "integer"
+                                                    },
+                                                    "maxAttempts": {
+                                                      "minimum": 0,
+                                                      "type": "integer"
+                                                    },
+                                                    "recipient_resolution": {
+                                                      "type": "object",
+                                                      "required": [
+                                                        "count",
+                                                        "droppedCount",
+                                                        "dropReasons",
+                                                        "channelsToEvaluate",
+                                                        "bypassedChannels",
+                                                        "droppedChannels"
+                                                      ],
+                                                      "properties": {
+                                                        "count": {
+                                                          "minimum": 0,
+                                                          "type": "integer"
+                                                        },
+                                                        "droppedCount": {
+                                                          "minimum": 0,
+                                                          "type": "integer"
+                                                        },
+                                                        "dropReasons": {
+                                                          "type": "object",
+                                                          "patternProperties": {
+                                                            "^(.*)$": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            }
+                                                          }
+                                                        },
+                                                        "channelsToEvaluate": {
+                                                          "type": "array",
+                                                          "items": {
+                                                            "type": "string"
+                                                          }
+                                                        },
+                                                        "bypassedChannels": {
+                                                          "type": "array",
+                                                          "items": {
+                                                            "type": "string"
+                                                          }
+                                                        },
+                                                        "droppedChannels": {
+                                                          "type": "array",
+                                                          "items": {
+                                                            "type": "string"
+                                                          }
+                                                        }
+                                                      }
+                                                    },
+                                                    "channel_routing": {
+                                                      "type": "object",
+                                                      "required": [
+                                                        "noChannelRecipients",
+                                                        "uniqueRecipientRouted",
+                                                        "channels"
+                                                      ],
+                                                      "properties": {
+                                                        "noChannelRecipients": {
+                                                          "minimum": 0,
+                                                          "type": "integer"
+                                                        },
+                                                        "uniqueRecipientRouted": {
+                                                          "minimum": 0,
+                                                          "type": "integer"
+                                                        },
+                                                        "channels": {
+                                                          "type": "object",
+                                                          "patternProperties": {
+                                                            "^(.*)$": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    },
+                                                    "timezone_policy": {
+                                                      "type": "object",
+                                                      "required": [
+                                                        "timezoneResolution",
+                                                        "channels"
+                                                      ],
+                                                      "properties": {
+                                                        "timezoneResolution": {
+                                                          "type": "object",
+                                                          "required": [
+                                                            "recipientTimezoneRouteCount",
+                                                            "policyTimezoneFallbackRouteCount",
+                                                            "utcFallbackRouteCount"
+                                                          ],
+                                                          "properties": {
+                                                            "recipientTimezoneRouteCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "policyTimezoneFallbackRouteCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "utcFallbackRouteCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            }
+                                                          }
+                                                        },
+                                                        "channels": {
+                                                          "type": "object",
+                                                          "patternProperties": {
+                                                            "^(.*)$": {
+                                                              "type": "object",
+                                                              "required": [
+                                                                "delayedRouteCount",
+                                                                "droppedRouteCount",
+                                                                "delayedGroupCount",
+                                                                "savedDelayedGroupCount",
+                                                                "delayReasons",
+                                                                "dropReasons"
+                                                              ],
+                                                              "properties": {
+                                                                "evaluatedRouteCount": {
+                                                                  "minimum": 0,
+                                                                  "type": "integer"
+                                                                },
+                                                                "sendNowRouteCount": {
+                                                                  "minimum": 0,
+                                                                  "type": "integer"
+                                                                },
+                                                                "delayedRouteCount": {
+                                                                  "minimum": 0,
+                                                                  "type": "integer"
+                                                                },
+                                                                "droppedRouteCount": {
+                                                                  "minimum": 0,
+                                                                  "type": "integer"
+                                                                },
+                                                                "delayedGroupCount": {
+                                                                  "minimum": 0,
+                                                                  "type": "integer"
+                                                                },
+                                                                "savedDelayedGroupCount": {
+                                                                  "minimum": 0,
+                                                                  "type": "integer"
+                                                                },
+                                                                "delayReasons": {
+                                                                  "type": "object",
+                                                                  "patternProperties": {
+                                                                    "^(.*)$": {
+                                                                      "minimum": 0,
+                                                                      "type": "integer"
+                                                                    }
+                                                                  }
+                                                                },
+                                                                "dropReasons": {
+                                                                  "type": "object",
+                                                                  "patternProperties": {
+                                                                    "^(.*)$": {
+                                                                      "minimum": 0,
+                                                                      "type": "integer"
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "template_mapping": {
+                                              "type": "object",
+                                              "allOf": [
+                                                {
+                                                  "type": "object",
+                                                  "required": [
+                                                    "status"
+                                                  ],
+                                                  "properties": {
+                                                    "status": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "success",
+                                                        "partial",
+                                                        "failed"
+                                                      ]
+                                                    },
+                                                    "startedAt": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "string"
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "error": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "object",
+                                                          "required": [
+                                                            "stageName",
+                                                            "errorClass",
+                                                            "errorCode",
+                                                            "errorMessage"
+                                                          ],
+                                                          "properties": {
+                                                            "stageName": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "trigger",
+                                                                "recipient_preference_and_routing",
+                                                                "template_mapping",
+                                                                "delivery"
+                                                              ]
+                                                            },
+                                                            "errorClass": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "validation",
+                                                                "client",
+                                                                "system"
+                                                              ]
+                                                            },
+                                                            "errorCode": {
+                                                              "type": "string"
+                                                            },
+                                                            "errorMessage": {
+                                                              "type": "string"
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "channels": {
+                                                      "type": "object",
+                                                      "patternProperties": {
+                                                        "^(.*)$": {
+                                                          "type": "object",
+                                                          "required": [
+                                                            "inputCount",
+                                                            "mappedCount",
+                                                            "droppedCount"
+                                                          ],
+                                                          "properties": {
+                                                            "inputCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "mappedCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "droppedCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "dropReasons": {
+                                                              "type": "object",
+                                                              "patternProperties": {
+                                                                "^(.*)$": {
+                                                                  "minimum": 0,
+                                                                  "type": "integer"
+                                                                }
+                                                              }
+                                                            },
+                                                            "deliveryRecipientCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "delivery": {
+                                              "type": "object",
+                                              "allOf": [
+                                                {
+                                                  "type": "object",
+                                                  "required": [
+                                                    "status"
+                                                  ],
+                                                  "properties": {
+                                                    "status": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "success",
+                                                        "partial",
+                                                        "failed"
+                                                      ]
+                                                    },
+                                                    "startedAt": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "string"
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "error": {
+                                                      "anyOf": [
+                                                        {
+                                                          "type": "object",
+                                                          "required": [
+                                                            "stageName",
+                                                            "errorClass",
+                                                            "errorCode",
+                                                            "errorMessage"
+                                                          ],
+                                                          "properties": {
+                                                            "stageName": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "trigger",
+                                                                "recipient_preference_and_routing",
+                                                                "template_mapping",
+                                                                "delivery"
+                                                              ]
+                                                            },
+                                                            "errorClass": {
+                                                              "type": "string",
+                                                              "enum": [
+                                                                "validation",
+                                                                "client",
+                                                                "system"
+                                                              ]
+                                                            },
+                                                            "errorCode": {
+                                                              "type": "string"
+                                                            },
+                                                            "errorMessage": {
+                                                              "type": "string"
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "type": "null"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "channels": {
+                                                      "type": "object",
+                                                      "patternProperties": {
+                                                        "^(.*)$": {
+                                                          "type": "object",
+                                                          "required": [
+                                                            "inputCount"
+                                                          ],
+                                                          "properties": {
+                                                            "inputCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "deliveredCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "skippedCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "failedCount": {
+                                                              "minimum": 0,
+                                                              "type": "integer"
+                                                            },
+                                                            "error": {
+                                                              "type": "object",
+                                                              "required": [
+                                                                "errorClass",
+                                                                "errorCode",
+                                                                "errorMessage"
+                                                              ],
+                                                              "properties": {
+                                                                "errorClass": {
+                                                                  "type": "string",
+                                                                  "enum": [
+                                                                    "validation",
+                                                                    "client",
+                                                                    "system"
+                                                                  ]
+                                                                },
+                                                                "errorCode": {
+                                                                  "type": "string"
+                                                                },
+                                                                "errorMessage": {
+                                                                  "type": "string"
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
                                 "lastErrorClass": {
                                   "anyOf": [
                                     {
@@ -13035,6 +14261,33 @@
                               "type": "string"
                             },
                             "AppID": {
+                              "type": "string"
+                            },
+                            "projectId": {
+                              "type": "string"
+                            },
+                            "privateKey": {
+                              "type": "string"
+                            },
+                            "keyId": {
+                              "type": "string"
+                            },
+                            "teamId": {
+                              "type": "string"
+                            },
+                            "bundleId": {
+                              "type": "string"
+                            },
+                            "clientEmail": {
+                              "type": "string"
+                            },
+                            "organizationId": {
+                              "type": "string"
+                            },
+                            "serverId": {
+                              "type": "string"
+                            },
+                            "environment": {
                               "type": "string"
                             },
                             "clientId": {
