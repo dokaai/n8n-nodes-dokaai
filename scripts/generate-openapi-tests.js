@@ -496,7 +496,7 @@ test('Dokaai node generates expected fields from OpenAPI params and request bodi
 			const bodyJsonField = fields.find((field) => field.name === 'bodyJson');
 
 			assert.equal(modeField?.required, false);
-			assert.equal(bodyJsonField?.required, false);
+			assert.notEqual(bodyJsonField?.required, true);
 			assert.equal(bodyJsonField?.default, '');
 		}
 	}

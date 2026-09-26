@@ -15,4 +15,10 @@ test('Dokaai API credentials include an n8n credential test request', () => {
 		'x-client-key': '={{$credentials.clientKey}}',
 		'x-client-secret': '={{$credentials.clientSecret}}',
 	});
+
+	const clientKey = credentials.properties.find((property) => property.name === 'clientKey');
+	const clientSecret = credentials.properties.find((property) => property.name === 'clientSecret');
+
+	assert.equal(clientKey?.typeOptions?.password, undefined);
+	assert.equal(clientSecret?.typeOptions?.password, true);
 });
