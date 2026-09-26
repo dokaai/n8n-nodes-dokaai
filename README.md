@@ -144,7 +144,7 @@ For internal architecture and OpenAPI generation details, see
 For npm publishing details, see
 [docs/RELEASE.md](https://github.com/dokaai/n8n-nodes-dokaai/blob/main/docs/RELEASE.md).
 
-For the exact command sequence after changing `dokaai-openapi-spec`, see the
+For the exact command sequence after changing `api/index.json`, see the
 Change And Release Workflow in
 [docs/RELEASE.md](https://github.com/dokaai/n8n-nodes-dokaai/blob/main/docs/RELEASE.md#change-and-release-workflow).
 
