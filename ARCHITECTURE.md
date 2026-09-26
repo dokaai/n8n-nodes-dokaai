@@ -2,7 +2,7 @@
 
 ## Source Of Truth
 
-The `dokaai-openapi-spec` npm package is the source of truth for the n8n node.
+`api/index.json` is the source of truth for the n8n node.
 
 It owns:
 
@@ -20,7 +20,7 @@ payload builders for normal REST operations.
 ## Module Map
 
 ```text
-dokaai-openapi-spec
+api/index.json
 credentials/
 nodes/Dokaai/Dokaai.node.ts
 nodes/Dokaai/descriptions/
@@ -102,7 +102,7 @@ mapping.
 `nodes/Dokaai/openapi/types.ts` owns the local OpenAPI TypeScript types used by
 the generator.
 
-`nodes/Dokaai/shared/document.ts` imports `dokaai-openapi-spec`.
+`nodes/Dokaai/shared/document.ts` imports `api/index.json`.
 
 `nodes/Dokaai/shared/fields.ts` owns common field-ordering helpers.
 
@@ -184,8 +184,11 @@ Examples:
 `npm run build` cleans `dist` before compiling. This prevents stale compiled
 files from deleted modules being published.
 
-The build copies node icon variants to `dist/nodes/Dokaai/` and credential icon
-variants to `dist/credentials/`.
+The build copies:
+
+- `api/index.json` to `dist/api/index.json`
+- node icon variants to `dist/nodes/Dokaai/`
+- credential icon variants to `dist/credentials/`
 
 ## Testing Strategy
 
@@ -193,10 +196,10 @@ Tests verify generated behavior without external API calls.
 
 `scripts/validate-openapi-config.js` verifies:
 
-- selected operation IDs exist in `dokaai-openapi-spec`
+- selected operation IDs exist in `api/index.json`
 - selected operation IDs are not duplicated
 - dynamic loader methods are declared
-- dynamic loader operation IDs exist in `dokaai-openapi-spec`
+- dynamic loader operation IDs exist in `api/index.json`
 - required loader path/query params are supplied by dependencies or static values
 
 Unit tests under `test/unit/` cover focused reusable behavior:
@@ -209,7 +212,7 @@ Unit tests under `test/unit/` cover focused reusable behavior:
 
 `scripts/generate-openapi-tests.js` derives test fixtures from:
 
-- `dokaai-openapi-spec`
+- `api/index.json`
 - `nodes/Dokaai/operation-selection.ts`
 - OpenAPI operation tags
 

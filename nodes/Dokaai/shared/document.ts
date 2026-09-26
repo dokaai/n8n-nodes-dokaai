@@ -1,5 +1,5 @@
-import dokaaiOpenApiSpec from 'dokaai-openapi-spec';
+import openApiDocument from '../../../api/index.json';
 
 import type { OpenApiDocument } from '../openapi/types';
 
-export const dokaaiOpenApiDocument = dokaaiOpenApiSpec as unknown as OpenApiDocument;
+export const dokaaiOpenApiDocument = openApiDocument as unknown as OpenApiDocument;

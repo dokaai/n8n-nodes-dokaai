@@ -35,8 +35,7 @@ const buildRawJsonBodyField = (
 			name: fieldName,
 			type: 'json',
 			default: '',
-			required: false,
-			description: 'Optional JSON request body sent to Dokaai for this operation.',
+			description: 'Optional JSON request body sent to Dokaai for this operation',
 			displayOptions,
 		},
 	];

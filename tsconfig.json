@@ -12,5 +12,5 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["index.ts", "credentials/**/*.ts", "nodes/**/*.ts"]
+  "include": ["index.ts", "api/**/*.json", "credentials/**/*.ts", "nodes/**/*.ts"]
 }
