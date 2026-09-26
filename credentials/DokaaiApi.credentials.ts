@@ -42,9 +42,6 @@ export class DokaaiApi implements ICredentialType {
 			displayName: 'Client Key',
 			name: 'clientKey',
 			type: 'string',
-			typeOptions: {
-				password: true,
-			},
 			default: '',
 			required: true,
 		},

@@ -45,7 +45,7 @@ for (const resource of resourceGroups) {
 		seenSelectedOperationIds.add(operationId);
 
 		if (!operationIdsInSpec.has(operationId)) {
-			errors.push(`Selected operation "${operationId}" was not found in dokaai-openapi-spec.`);
+			errors.push(`Selected operation "${operationId}" was not found in api/index.json.`);
 		}
 	}
 }
